@@ -1,0 +1,82 @@
+\documentclass{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Margins
+\usepackage[margin=1in]{geometry}
+% Spaced paragraphs
+\usepackage[parfill]{parskip}
+% Fancy headers
+\usepackage{fancyhdr}
+% Allow use of titles
+\usepackage{titling}
+
+% ams stuff
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+% Links
+\usepackage{hyperref}
+
+% Allow repetition in macros
+\usepackage{multido}
+
+% ObjectZ notation / symbols
+\usepackage{oz}
+\usepackage{stmaryrd}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% GCL / proof definitions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Hoare triple
+\newcommand{\hoare}[3]{ \left\lbrace #1 \right\rbrace #2 \left\lbrace #3 \right\rbrace}
+
+% GCl syntax
+\newcommand{\Skip}{{\bf skip}}    
+\newcommand{\Abort}{{\bf abort}}
+\newcommand{\If}{{\bf if}}
+\newcommand{\Fi}{{\bf fi}}
+\newcommand{\Do}{{\bf do}}
+\newcommand{\Od}{{\bf od}}
+\newcommand{\Choice}{\mathrel{\tt [\hspace*{-1pt}]}}
+
+% Array length
+\newcommand{\len}{\text{len}}
+% Array slice
+\newcommand{\arrayslice}[3]{{#1}_{\left[{#2},{#3}\right)}}
+
+% GCL lines
+\newcommand{\Repeat}{\multido{\i=1+1}}
+\newcommand{\gcl}[2]{\null \Repeat{#1}{\qquad} $ #2 $\\}
+
+% Proof syntax
+\newcommand{\entails}{\Rrightarrow}
+\newcommand{\refsto}{\mathrel{\sqsubseteq}}
+\newcommand{\form}[1]{\gcl{0}{#1}}
+\newcommand{\hint}[2]{$ #1 \left\lbrace \text{#2} \right\rbrace $\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Titles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{CSSE3100 Course Notes}
+\author{Joseph Spearritt}
+
+\pagestyle{fancy}
+\lhead{\thetitle}
+\rhead{\theauthor}
+\cfoot{\thepage}
+
+\begin{document}
+	\include{predicate}
+	\include{gcl}
+	\include{refinement}
+	\include{derivation}
+	\include{procedures}
+	\include{recursion}
+	\include{modules}
+\end{document}

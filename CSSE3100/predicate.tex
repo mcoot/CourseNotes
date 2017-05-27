@@ -1,0 +1,75 @@
+\section{Predicate Logic \& Correctness}
+
+\begin{itemize}
+	
+	\item Propositional operators
+	
+	\begin{itemize}
+		
+		\item not ($ \lnot $), and ($ \land $), or ($ \lor $)
+		
+		\item implication ($ \implies $) -- $ P \implies Q \equiv \lnot P \lor Q $
+		
+		\item equivalence ($ \iff $) -- $ P \iff Q \equiv (P \implies Q) \land (Q \implies P)$
+		
+	\end{itemize}
+	
+	\item Operator precedence (tightest-binding first): $ \lnot $, $ \land $, $ \lor $, $ \implies $
+	
+	\item Quantifiers
+	
+	\begin{itemize}
+		
+		\item for all ($ \forall $)
+		
+		\item there exists ($ \exists $)
+		
+		\item Example: $ \forall x \in \mathbb{N} \cdot x \ge 0 $
+		
+		\item The type of the bound variable may be implicit, e.g. $ \forall x \cdot x \ge 0 $
+		
+	\end{itemize}
+
+	\item Entailment
+	
+	\begin{itemize}
+		
+		\item If $ P \implies Q $ is a tautology (always true) then $ P $ is stronger than $ Q $
+		
+		\item Equivalently: $ P $ entails $ Q $ ($ P \entails Q $)
+		
+	\end{itemize}
+
+	\item Substitution
+	
+	\begin{itemize}
+		
+		\item $ P[x \backslash a] $ -- Substitute all occurrences of $ x $ by $ a $ in $ P $
+		
+		\item $ P[x, y \backslash a, b] $ -- Substitute $ a $ and $ b $ for $ x $ and $ y $ \textbf{simultaneously}
+		
+	\end{itemize}
+
+	\item Hoare triples -- $ \hoare{P}{S}{Q} $
+	
+	\begin{itemize}
+		
+		\item $ P $ is the precondition, $ S $ is the program and $ Q $ is the postcondition
+		
+		\item If $ P $ is true before $ S $ executes, then $ S $ will terminate and $ Q $ will be true when it does
+		
+		\item The program must terminate if started in $ \text{States}_{_P} $ (total correctness)
+		
+	\end{itemize}
+	
+	\item Weakest preconditions
+	
+	\begin{itemize}
+		
+		\item For a program $ S $ and postcondition $ Q $, $ wp(S, Q) $ is the unique weakest possible precondition such that the triple $ \hoare{P}{S}{Q} $ will be true
+		
+		\item $ \forall P \cdot (\hoare{P}{S}{Q}) \implies (P \entails wp(S, Q)) $
+		
+	\end{itemize}
+		
+\end{itemize}
