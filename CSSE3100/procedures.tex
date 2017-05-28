@@ -1,1 +1,103 @@
 \section{Procedures}
+
+\begin{itemize}
+	
+	\item A procedure is a named block of code used for structure and to enable reuse
+	
+	\item Given $ \Procedure ~ R() \defeq S $ and $ w : [P, Q] \refsto S $, we have that $ w : [P, Q] \refsto R $
+	
+	\item The \textit{formal} parameter is used in the function and the \textit{actual} parameter is what's passed in
+	
+	\item Parameter types
+	
+	\begin{itemize}
+		
+		\item $ \Value $
+		
+		\begin{itemize}
+			
+			\item Sets the formal parameter to the value of a variable or expression when the procedure runs
+			
+			\item Modifying the formal parameter in the procedure doesn't affect the actual parameter
+			
+			\item Given $ \Procedure ~ R(\Value ~ z) \defeq S $  and $ w, z : [P, Q] \refsto S$:\\
+			$ ~~~~ w : [P[z \backslash a], Q[z_0 \backslash a_0]] \refsto R(a) $ where $ a_0 = a[w \backslash w_0] $
+			
+			\item The postcondition $ Q $ should not contain $ z $ since it is local to $ R $
+				
+		\end{itemize}
+		
+		\item $ \Result $
+		
+		\begin{itemize}
+			
+			\item The actual parameter takes the value of the formal parameter when the procedure terminates
+			
+			\item The actual parameter must be a variable, not an expression and its initial value is not defined
+			
+			\item Given $ \Procedure ~ R(\Result z) \defeq S $ and $ w, z : \refsto S $:\\
+			$ ~~~~ w : [P, Q[z \backslash a]] \refsto R(a) $
+			
+			\item The precondition $ P $ should not contain $ z $, and the postcondition $ Q $ should not contain $ z_0 $
+			
+		\end{itemize}
+		
+		\item $ \ValueResult $
+		
+		\begin{itemize}
+			
+			\item The formal parameter takes the value of the actual parameter when the procedure starts
+			
+			\item The actual parameter takes the value of the formal parameter when the procedure terminates
+			
+			\item Given $ \Procedure ~ R(\ValueResult ~ z) \defeq S $ and $ w, z : [P, Q] \refsto S $:\\
+			$ ~~~~ w, a : [P[z \backslash a], Q[z_0, z \backslash a_0, a]] \refsto R(a) $
+			
+			\item There are no constraints on how $ z $ and $ z_0 $ may appear in $ P $ and $ Q $
+			
+		\end{itemize}
+	
+		\item A procedure may have multiple parameters of different types
+		
+		\begin{itemize}
+			
+			\item e.g. $ \Procedure ~ R(\Result ~ x, y; \Value ~ z) \defeq x, y := 0, z + 1 $
+			
+		\end{itemize}
+		
+		 
+	
+		\item Introducing procedures when refining
+		
+		\begin{enumerate}
+			
+			\item Identify a suitable specification $ x, y, z : [P, Q] $ and choose a name $ R $
+			
+			\item Identify parameters and their types
+			
+			\begin{itemize}
+				
+				\item Variables in $ P $ only are likely $ \Value $ parameters
+				
+				\item Variables in $ Q $ only are likely $ \Result $ parameters
+				
+				\item Variables in both are likely $ \ValueResult $ parameters
+				
+			\end{itemize}
+		
+			$ \Procedure ~ R(\Value ~ x; \Result ~ y; \ValueResult ~ z) \defeq x, y, z : [P, Q] $
+			
+			\item If the formal parameter appears only in the precondition, use a $ \Value $ parameter
+			
+			\item Refine the body of $ R $ to code
+			
+			\item Refine the main program with variables $ a, b, c $ to the specification:\\
+			$ ~~~~ b, c : [P[x, z \backslash a, c], Q[x_0, y, z_0, z \backslash a_0, b, c_0, c]]$
+			
+			\item Replace the above specification with $ R(a, b, c) $
+			
+		\end{enumerate}
+		
+	\end{itemize}
+	
+\end{itemize}

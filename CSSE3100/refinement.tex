@@ -133,7 +133,7 @@
 	
 	\item To apply the repetition rule
 	
-		\begin{itemize}
+		\begin{enumerate}
 			
 			\item Strengthen postcondition to $ I \land \lnot G $ (side condition: $ I \land \lnot G \entails Q $)
 			
@@ -143,7 +143,7 @@
 			
 			\item Refine the second half using the repetition rule (no side conditions!)
 			
-		\end{itemize}
+		\end{enumerate}
 	
 	\item Rule: Let $ G \defeq \bigvee_{i=1}^{n} G_i $, then $ w : [I, I \land \lnot G] \refsto$\\
 	$ ~~~~ \Do ~ G_1 \rightarrow w : [I \land G_1, I \land (0 \le V < V_0)] $\\

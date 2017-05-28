@@ -1,1 +1,67 @@
+\section{Arrays}
+
+\begin{itemize}
+	
+	\item If $ A $ is an array, then $ A.\len $ is the number of elements in $ A $
+	
+	\item $ A_i $ is the zero-indexed $ i $\textsuperscript{th} element of $ A $ if $ 0 \le i < A.\len $
+	
+	\begin{itemize}
+		
+		\item If $ i $ is outside of $ \left[ 0, A.\len \right) $ then $ A_i $ is undefined
+		
+	\end{itemize}
+
+	\item $ \arrayslice{A}{i}{j} $ is the subarray from containing the elements from $ A_i $ to $ A_{j - 1} $
+	
+	\begin{itemize}
+		
+		\item $ \arrayslice{A}{i}{i} $ is the empty array $ [] $
+		
+		\item If $ i > j $ or $ i < 0 $ or $ j > A.\len $ then the subarray is undefined
+		 
+	\end{itemize}
+	
+\end{itemize}
+
 \section{Derivation}
+
+\begin{itemize}
+	
+	\item Deriving a loop based program: follow the strategy for repetition
+	
+	\begin{itemize}
+		\item Strengthen postcondition, use composition, assignment rule for initialisation, repetition rule
+	\end{itemize}
+	
+	\item Patterns for finding an invariant when deriving a loop-based program
+	
+	\begin{itemize}
+		
+		\item \textbf{Pattern 1}: Given postcondition $ Q \defeq Q_1 \land Q_2 $, let $ Q_1 $ be the invariant and $ Q_2 $ be the negation of the guard
+		
+		\begin{itemize}
+			
+			\item Use this pattern if the postcondition consists of conjunct conditions and one looks like a useful negation of the guard
+			
+			\item If there is only one condition, remember the invariant could always just be $ \true $
+			
+		\end{itemize}
+		
+		\item \textbf{Pattern 2}: Given postcondition $ Q $ which uses some constant $ N $, replace $ N $ with a variable $ x $, and let the negation of the guard be $ x = N $
+		
+		\begin{itemize}
+			
+			\item Use this pattern to create an iterator variable $ x $ when there is something clear to iterate over
+			
+			\item This is commonly used for array-based programs
+			
+			\item In an array-based program with no obvious constants, remember that $ A = \arrayslice{A}{0}{A.\len} $
+			
+		\end{itemize}
+	
+		\item Note that often these will just be `starting' invariants that may require strengthening
+		
+	\end{itemize}
+	
+\end{itemize}
