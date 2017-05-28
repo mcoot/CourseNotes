@@ -65,39 +65,101 @@
 			
 		\end{itemize}
 		
-		 
+	\end{itemize}
+
+	\item Introducing procedures and procedure calls when refining
 	
-		\item Introducing procedures when refining
+	\begin{enumerate}
 		
-		\begin{enumerate}
-			
-			\item Identify a suitable specification $ x, y, z : [P, Q] $ and choose a name $ R $
-			
-			\item Identify parameters and their types
-			
-			\begin{itemize}
-				
-				\item Variables in $ P $ only are likely $ \Value $ parameters
-				
-				\item Variables in $ Q $ only are likely $ \Result $ parameters
-				
-				\item Variables in both are likely $ \ValueResult $ parameters
-				
-			\end{itemize}
+		\item Identify a suitable specification $ x, y, z : [P, Q] $ and choose a name $ R $
 		
-			$ \Procedure ~ R(\Value ~ x; \Result ~ y; \ValueResult ~ z) \defeq x, y, z : [P, Q] $
+		\item Identify parameters and their types
+		
+		\begin{itemize}
 			
-			\item If the formal parameter appears only in the precondition, use a $ \Value $ parameter
+			\item Variables in $ P $ only are likely $ \Value $ parameters
 			
-			\item Refine the body of $ R $ to code
+			\item Variables in $ Q $ only are likely $ \Result $ parameters
 			
-			\item Refine the main program with variables $ a, b, c $ to the specification:\\
-			$ ~~~~ b, c : [P[x, z \backslash a, c], Q[x_0, y, z_0, z \backslash a_0, b, c_0, c]]$
+			\item Variables in both are likely $ \ValueResult $ parameters
 			
-			\item Replace the above specification with $ R(a, b, c) $
-			
-		\end{enumerate}
+		\end{itemize}
+		
+		$ \Procedure ~ R(\Value ~ x; \Result ~ y; \ValueResult ~ z) \defeq x, y, z : [P, Q] $
+		
+		\item If the formal parameter appears only in the precondition, use a $ \Value $ parameter
+		
+		\item Refine the body of $ R $ to code
+		
+		\item Refine the main program with variables $ a, b, c $ to the specification:\\
+		$ ~~~~ b, c : [P[x, z \backslash a, c], Q[x_0, y, z_0, z \backslash a_0, b, c_0, c]]$
+		
+		\item Replace the above specification with $ R(a, b, c) $
+		
+	\end{enumerate}
+	
+\end{itemize}
+
+\newpage
+
+\subsection{Recursion}
+
+\begin{itemize}
+	
+	\item Procedures may be called recursively (i.e. from within themselves), as per any procedure call
+	
+	\item Need to use a variant $ V $ to ensure the recursion reaches a base case
+	
+	\begin{itemize}
+		
+		\item The variant may refer to variables including parameters (aside from $ \Result $ parameters)
+		
+		\item Given procedure $ R $ with specification $ w : [P, Q] $, let $ V = N $ when the procedure is first called
+		
+		\item Then to refine to a call outside the function, $ R $ has specification $ w : [P \land (V = N), Q] $
+		
+		\item To refine to a recursive call within $ R $, we require the specification $ w : [P \land (0 \le V < N), Q] $
 		
 	\end{itemize}
 	
 \end{itemize}
+
+$ ~ $
+
+Example: $ \Procedure ~ Factorial(\Value ~ n, \Result ~ f) \defeq n : f [n \ge 0, f = n_0!] $.
+
+Let $ n $ be the variant and introduce $ n = N $ into the precondition (for the initial call).\\
+\form{n, f : [n \ge 0 \land n = N, f = n_0!]}
+\hint{\refsto}{Selection: $ n \ge 0 \land n = N \entails n = 0 \lor n > 0 $}
+\gcl{0}{\If ~ n = 0 \rightarrow n, f : [n \ge 0 \land n = 0 \land n = N, f = n_0!]}
+\gcl{0}{\Choice ~ n > 0 \rightarrow n, f : [n \ge 0 \land n > 0 \land n = N, f = n_0!]}
+\gcl{0}{\Fi}
+\hint{\refsto}{Assignment: $ n \ge 0 \land n = 0 \land n = N \entails (f = n_0!)[f \backslash 1] $}
+\gcl{0}{\If ~ n = 0 \rightarrow f := 1}
+\gcl{0}{\Choice ~ n > 0 \rightarrow n, f : [n \ge 0 \land n > 0 \land n = N, f = n_0!]}
+\gcl{0}{\Fi}
+
+The remaining specification $ n, f : [n \ge 0 \land n > 0 \land n = N, f = n_0!] $ is refined as follows:
+\form{n, f : [n \ge 0 \land n > 0 \land n = N, f = n_0!]}
+\hint{\refsto}{Contract frame: $ n $}
+\form{f : [n \ge 0 \land n > 0 \land n = N, f = n!]}
+\hint{\refsto}{Following assignment: $ f := f \times n $}
+\gcl{0}{f : [n \ge 0 \land n > 0 \land n = N, (f = n!)[f \backslash f \times n]]; f := f \times n}
+
+The remaining specification $ f : [n \ge 0 \land n > 0 \land n = N, (f \times n) = n!] $ is refined into a recursive call:\\
+\form{f : [n \ge 0 \land n > 0 \land n = N, (f \times n) = n!]}
+\hint{\refsto}{Apply substitution}
+\form{f : [n \ge 0 \land n > 0 \land n = N, (f \times n) = n!]}
+\hint{\refsto}{Divide both sides of $ f \times n = n! $ by $ n $}
+\form{f : [n \ge 0 \land n > 0 \land n = N, f = (n - 1)!]}
+\hint{\refsto}{Weaken precondition: $ n \ge 0 \land n > 0 \land n = N \entails n - 1 \ge 0 \land (0 \le n - 1 < N) $}
+\form{f : [n - 1 \ge 0 \land (0 \le n - 1 < N), f = (n - 1)!]}
+\hint{\refsto}{Apply substitution backwards}
+\form{f : [(n \ge 0 \land (0 \le n < N))[n \backslash n - 1], (f = n!)[n_0, f \backslash n_0 - 1, f]]}
+\hint{\refsto}{Introduce recursive call with $ \Value $ parameter $ n $ and $ \Result $ parameter $ f $}
+\form{Factorial(n - 1, f)}
+
+This produces the final program:\\
+\gcl{0}{\If ~ n = 0 \rightarrow f := 1}
+\gcl{0}{\Choice ~ n > 0 \rightarrow Factorial(n - 1, f); f := f \times n}
+\gcl{0}{\Fi}
