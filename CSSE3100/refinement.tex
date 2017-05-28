@@ -1,1 +1,173 @@
 \section{Refinement \& Verification}
+
+\begin{itemize}
+	
+	\item Specification statement: $ w : [P, Q] $
+	
+	\item $ P $ is the precondition, $ Q $ is the postcondition, $ w $ is the `frame' of variables that may be modified
+	
+	\item A program $ C $ satisfies $ w : [P, Q] $ if and only if
+	
+	\begin{itemize}
+		
+		\item $ \hoare{P}{C}{Q} $
+		
+		\item $ C $ only changes variables in $ w $
+		
+	\end{itemize}
+
+	\item If $ P $ is not true when $ C $ is executed it may do anything, and it need not terminate
+	
+	\item Mixing specification statements with GCL forms a `wide-spectrum language'
+	
+	\item Refinement ($ \refsto $) -- a partial ordering on programs (similar to $ \le $ for reals)
+	
+	\begin{itemize}
+		
+		\item $ S \refsto S' $ means a user expecting program $ S $ would be satisfied with $ S' $
+		
+		\item $ S \refsto S' \iff \forall Q \cdot wp(S, Q) \entails wp(S', Q) $
+		
+		\item For a specification: $ wp(x : [P, Q], Q') \defeq P \land (\forall x \cdot Q \implies Q')[v_0 \backslash v] $
+		
+	\end{itemize}
+
+	\item General approach to refining a program
+	
+	\begin{itemize}
+		
+		\item Start with a specification $ S = w : [P, Q] $
+		
+		\item Use rules to replace $ S $ with $ S' $ mixing specifications with GCL
+		
+		\item Each rule must preserve correctness -- i.e. every program $ C $ that satisfies $ S' $ must satisfy $ S $
+		
+		\item Eventually arrive at a pure GCL program $ C $ such that $ \hoare{P}{C}{Q} \equiv \true $
+		
+	\end{itemize}
+	
+\end{itemize}
+
+\newpage
+
+\subsection{Refinement Rules}
+
+\begin{itemize}
+	
+	\item Rule 1: \textbf{Strengthen Postcondition}
+	
+	\begin{itemize}
+		
+		\item If $ P[w \backslash w_0] \land Q' \entails Q $ then $ w : [P, Q] \refsto w : [P, Q'] $ ($ P[w \backslash w_0] $ usually not needed)
+		
+	\end{itemize}
+	
+	\item Rule 2: \textbf{Weaken Precondition}
+	
+	\begin{itemize}
+		
+		\item If $ P \entails P' $ then $ w : [P, Q] \refsto w : [P', Q] $
+		
+	\end{itemize}
+
+	\item Rule 3: \textbf{Skip}
+	
+	\begin{itemize}
+		
+		\item If $ P \entails Q $ then $ w : [P, Q] \refsto \Skip $
+		
+	\end{itemize}
+
+	\item Rule 4: \textbf{Assignment}
+	
+	\begin{itemize}
+		
+		\item If $ P \entails Q[x \backslash E] $ then $ x : [P, Q] \refsto x := E $
+		
+	\end{itemize}
+	
+	\item Rule 5: \textbf{Composition}
+	
+	\begin{itemize}
+		
+		\item $ w : [P, Q] \refsto w : [P, M]; w : [M, Q] $ (no side condition)
+		
+	\end{itemize}
+
+	\item Rule 6: \textbf{Following Assignment} (combined assignment and composition)
+	
+	\begin{itemize}
+	
+	\item $ w, x : [P, Q] \refsto w, x : [P, Q[x \backslash E]]; x := E $
+	
+	\end{itemize}
+
+	\item Rule 7: \textbf{Selection}
+	
+	\begin{itemize}
+		
+		\item If $ P \entails \bigvee_{i=1}^{n} G_i $ then $ w : [P, Q] \refsto $\\
+		$ ~~~~ \If ~ G_1 \rightarrow w : [G_1 \land P, Q] $\\
+%		$ ~~~~ \Choice ~ G_2 \rightarrow w: [G_2 \land P, Q] $\\
+		$ ~~~~ \dots $\\
+		$ ~~~~ \Choice ~ G_n \rightarrow w: [G_n \land P, Q] $\\
+		$ ~~~~ \Fi $
+		
+	\end{itemize}
+
+	\item Rule 8: \textbf{Repetition}
+	
+	\begin{itemize}
+		
+		\item For repetition, a loop invariant $ I $ and loop variant (an integer expression) $ V $ are required
+		
+		\begin{itemize}
+			
+			\item Let $ V_0 $ be the value of $ V $ at the start of each iteration
+			
+			\item Then $ 0 \le V < V_0 $ is $ \true $ at the end of each iteration
+			
+			\item (i.e. $ V $ is \textit{strictly decreasing} on every iteration, and won't be negative before loop termination)
+			
+		\end{itemize}
+	
+	\item To apply the repetition rule
+	
+		\begin{itemize}
+			
+			\item Strengthen postcondition to $ I \land \lnot G $ (side condition: $ I \land \lnot G \entails Q $)
+			
+			\item Use composition to perform $ w : [P, I \land \lnot G] \refsto w : [P, I]; w : [I, I \land \lnot G] $
+			
+			\item Refine the first half into initialisation (e.g. an assignment)
+			
+			\item Refine the second half using the repetition rule (no side conditions!)
+			
+		\end{itemize}
+	
+	\item Rule: Let $ G \defeq \bigvee_{i=1}^{n} G_i $, then $ w : [I, I \land \lnot G] \refsto$\\
+	$ ~~~~ \Do ~ G_1 \rightarrow w : [I \land G_1, I \land (0 \le V < V_0)] $\\
+%	$ ~~~~ \Choice ~ G_2 \rightarrow w : [I \land G_2, I \land (0 \le V < V_0)] $\\
+	$ ~~~~ \dots $\\
+	$ ~~~~ \Choice ~ G_n \rightarrow w : [I \land G_n, I \land (0 \le V < V_0)] $\\
+	$ ~~~~ \Od $
+	
+	\end{itemize}
+
+	\item Rule 9: \textbf{Contract frame}
+	
+	\begin{itemize}
+		
+		\item $ w, x : [P, Q] \refsto w : [P, Q[x_0 \backslash x]] $
+		
+	\end{itemize}
+
+	\item Rule 10: \textbf{Remove invariant}
+	
+	\begin{itemize}
+		
+		\item If $ w $ does not occur in $ I $ then $ w : [P \land I, Q \land I] \refsto w : [P, Q] $
+		
+	\end{itemize}
+	
+\end{itemize}
