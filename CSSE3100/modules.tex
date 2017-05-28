@@ -1,1 +1,193 @@
 \section{Modules}
+
+\begin{itemize}
+	
+	\item Modules provide a way to store data structures and procedures
+	
+	\item Example:\\
+	\gcl{0}{\Module ~ UniqueNumberAllocator}
+	\gcl{1}{\Export ~ Acquire, Reset}
+	\gcl{1}{\Import ~ Choose}
+	\gcl{1}{}
+	\gcl{1}{\Var ~ u : \textbf{set} \left[0, N\right)}
+	\gcl{1}{}
+	\gcl{1}{\Procedure ~ Acquire(\Result ~ t) \defeq}
+	\gcl{2}{Choose(\left[0, N\right) - $ u $, t); u := u \cup \left\lbrace t \right\rbrace]}
+	\gcl{1}{}
+	\gcl{1}{\Procedure ~ Reset() \defeq u := \left\lbrace \right\rbrace}
+	\gcl{1}{}
+	\gcl{1}{\Procedure ~ Choose(\Value ~ s; \Result ~ e) \defeq e : [s \ne \left\lbrace \right\rbrace, e \in s]}
+	\gcl{1}{}
+	\gcl{1}{\Initially ~ u = \left\lbrace \right\rbrace}
+	$ \End $
+	\item Syntax
+	
+	\begin{itemize}
+		
+		\item Modules are declared with $ \Module $ and have a unique name
+		
+		\item Module-level variables are declared in the $ \Var $ clause and given a type
+		
+		\item The initial condition of module variables is given the predicate in the $ \Initially $ clause
+		
+		\item Modules may define procedures which make use of its variables
+		
+		\item Modules list which procedures are exported publicly with an $ \Export $ clause (if there is no $ \Export $ clause, all procedures are exported)
+		
+		\item The variables and procedures of another module may be used if they are included in the $ \Import $ clause
+		
+		\begin{itemize}
+			
+			\item Imported variables must be redeclared exactly as in their source module
+			
+			\item Imported procedures must be redeclared: the original declaration must refine the redeclaration
+			
+			\item Imported procedures cannot refer to the local variables of the module they are imported into
+			
+			\item Circular import/export is not well defined
+			
+		\end{itemize}
+		
+	\end{itemize}
+	
+\end{itemize}
+
+\subsection{Module Refinement}
+
+\begin{itemize}
+	
+	\item A module $ M' $ refines some module $ M $ with exported procedures $ E $, imported procedures $ I $ and initialisation condition $ init $ when
+	
+	\begin{itemize}
+		
+		\item $ M' $ has the same local and imported variables as $ M $
+		
+		\item The exported procedures $ E' $ refine those in $ E $ (there may be more procedures in $ E' $, but not fewer)
+		
+		\item The imported procedures $ I' $ refine those in $ I $ (there may be fewer procedures in $ I' $ but not more)
+		
+		\item The initialisation $ init' $ is stronger than $ init $ -- i.e. $ init' \entails init $
+		
+	\end{itemize}
+	
+	\item To refine modules with different variables, data refinement is required
+	
+\end{itemize}
+
+\newpage
+
+\subsection{Data Refinement}
+
+\begin{itemize}
+	
+	\item The local state of a module cannot be accessed from the outside, so it may be changed provided the difference cannot be detected by use of the exported procedures
+	
+	\item Rule 1: \textbf{Introducing new variables}
+	
+	\begin{itemize}
+		
+		\item Relationships between new and existing variables are maintained via a \textbf{coupling invariant} $ CI $
+		
+		\begin{itemize}
+			
+			\item E.g. $ CI \defeq p = q + r $
+			
+		\end{itemize}
+		
+		\item The initialisation $ init $ becomes $ init \land CI $
+		
+		\begin{itemize}
+			
+			\item E.g. if initialisation was $ p = 1 $, it would become $ p = 1 \land p = q + r $
+			
+		\end{itemize}
+		
+		\item Any specification $ w : [P, Q] $ becomes $ w, c : [P \land CI, Q \land CI] $ where $ c $ is the list of new variables
+		
+		\begin{itemize}
+			
+			\item E.g. $ p : [p > 0, p < p_0]  $ becomes $ p, q, r : [p > 0 \land p = q + r, p < p_0 \land p = q + r] $
+			
+		\end{itemize}
+		
+		\item Every assignment in the module $ w := E $ becomes $ w, c := E, F $ provided that $ CI \entails CI[w, c \backslash E, F] $
+		
+		\begin{itemize}
+			
+			\item E.g. $ p := p + 1 $ becomes $ p, q := p + 1, q + 1 $, or alternately $ p, r := p + 1, r + 1 $
+			
+		\end{itemize}
+		
+		\item Every guard in the module $ G $ becomes $ G' $ provided that $ CI \entails (G \iff G') $
+		
+		\begin{itemize}
+			
+			\item $ G' \defeq CI \land G $ is always suitable
+			
+			\item E.g. the guard $ p > 0 $ could become $ p > 0 \land p = q + r $, or alternately $ p = q +r \implies p > 0 $
+			
+		\end{itemize}
+		
+	\end{itemize}
+	
+	\item Rule 2: \textbf{Removing an existing variable}
+	
+	\begin{itemize}
+		
+		\item Only \textbf{auxiliary variables} may be removed, i.e. they must only appear in:
+		
+		\begin{itemize}
+			
+			\item Assignments
+			
+			\item Specifications which modify only auxiliary variables
+			
+		\end{itemize}
+	
+		\item The initialisation $ init $ becomes $ \exists a \cdot init $ where $ a $ is the auxiliary variable
+		
+		\begin{itemize}
+			
+			\item The `one-point rule' may be used to remove the existential quantifier: $ \exists x \cdot P \land x = n \equiv P[x \backslash n] $
+			
+			\item E.g. given initialisation $ p = 1 \land p = q + r $, it would become $ \exists p \cdot p = 1 \land p = q + r \equiv q + r = 1 $
+			
+		\end{itemize}
+	
+		\item All specifications $ w, a : [P, Q] $ become $ w : [\exists a \cdot P, \forall a_0 \cdot P[w, a \backslash w_0, a_0] \implies (\exists a \cdot Q)] $
+		
+		\begin{itemize}
+			
+			\item A similar one-point rule may be used to remove the universal quantifier:\\
+			$~~~~ \forall x \cdot P \land x = n \implies Q \equiv P[x \backslash n] \implies Q[x \backslash n] $
+			
+			\item E.g. $ p, q, r : [p > 0 \land p = q + r, p < p_0 \land p = q + r] $ can be refined to:\\
+			\form{q, r : [\exists p \cdot p > 0 \land p = q + r, \forall p_0 \cdot p_0 > 0 \land p_0 = q_0 + r_0 \implies (\exists p \cdot p < p_0 \land p = q + r)]}
+			\hint{\refsto}{Apply $ \exists $ one-point rule to pre and postconditions}
+			\form{q, r : [q + r > 0, \forall p_0 \cdot p_0 > 0 \land p_0 = q_0 + r_0 \implies q + r < p_0]}
+			\hint{\refsto}{Apply $ \forall $ one-point rule to postcondition}
+			\form{q, r : [q + r > 0, q_0 + r_0 > 0 \implies q + r < q_0 + r_0]}
+			
+		\end{itemize}
+	
+		\item Any assignment $ w, a := E, F $ where $ E $ contains no variables from $ a $ can be replaced by $ w := E $
+		
+		\begin{itemize}
+			
+			\item E.g. $ p, q := p + 1, q + 1 $ can be replaced by $ q := q + 1 $
+			
+		\end{itemize}
+		
+		\item Normally the coupling invariant $ CI $ relates each concrete state to a unique abstract state (e.g. $ p = q + r $), in which case the following rule applies:
+		
+		\begin{itemize}
+			
+			\item Given abstract variables $ a $ and concrete variables $ c $, if $ CI \defeq a = f(c) \land P(c) $ then a guard $ G $ may be replaced by $ G[a \backslash f(c)] \land P(c)$, or simply by $ G[a \backslash f(c)] $
+			
+			\item E.g. $ p > 0 \land p = q + r $ can be replaced by $ q + r > 0 \land q + r = q + r \equiv q + r > 0 $
+			
+		\end{itemize}
+		
+	\end{itemize}
+	
+\end{itemize}
