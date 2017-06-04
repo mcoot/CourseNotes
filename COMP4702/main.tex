@@ -1,0 +1,51 @@
+\documentclass{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Margins
+\usepackage[margin=1in]{geometry}
+% Spaced paragraphs
+\usepackage[parfill]{parskip}
+% Fancy headers
+\usepackage{fancyhdr}
+% Allow use of titles
+\usepackage{titling}
+
+% ams stuff
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+% Links
+\usepackage[hidelinks]{hyperref}
+
+% Allow repetition in macros
+\usepackage{multido}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Titles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{COMP4702 Course Notes -- \url{https://github.com/mcoot/CourseNotes} }
+\author{Joseph Spearritt}
+
+\pagestyle{fancy}
+\lhead{\thetitle}
+\rhead{\theauthor}
+\cfoot{\thepage}
+
+\begin{document}
+	
+	\include{supervised}
+	
+	\include{unsupervised}
+	
+	\include{neuralnets}
+	
+\end{document}
