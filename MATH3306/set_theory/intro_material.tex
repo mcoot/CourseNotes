@@ -1,0 +1,218 @@
+\section{Graph Model of Set Theory}
+
+\begin{itemize}
+	
+	\item Directed graphs: $ G = \pair{V}{A} $
+	
+%	\begin{itemize}
+%		
+%		\item $ V $ is the set of vertices
+%		
+%		\item $ A \subseteq V \times V $ is the set of ordered pairs of vertices representing arrows
+%		
+%	\end{itemize}
+
+	\item A graph is \textbf{well-founded} if it has no looping paths and no infinite descending paths
+	
+	\item A graph is \textbf{extensional} if for any $ v_0, v_1 $ such that $ v_0 $ has the same incoming arrows as $ v_1 $, $ v_0 = v_1 $
+	
+	\item Two graphs are isomorphic if there is a function (\textit{isomorphism}) $ \sigma $ between them such that:
+	
+	\begin{itemize}
+		
+		\item $ \sigma $ is a bijection (surjection + injection)
+		
+		\item $ vA_0 u \leftrightarrow \sigma(v) A_1 \sigma(u) $
+		
+	\end{itemize}
+
+	\item An automorphism is an isomorphism between some graph and itself (the identity is a trivial one)
+	
+	\item $ G $ is a subgraph of $ G' $ if $ V \subseteq V' $ and $ v_0 A v_1 \leftrightarrow v_0 A' v_1 $ for all $ v_0, v_1 \in V $
+	
+	\item $ G $ is \textit{maximal} in some property $ \Phi $ if $ G $ possesses $ \Phi $ and there exists no graph $ G' $ such that:
+	
+	\begin{itemize}
+		
+		\item $ G' $ possesses $ \Phi $; and
+		\item $ G $ is a proper subgraph of $ G' $
+		
+	\end{itemize}
+	
+	\item Let $ G $ be a \textit{maximal} well-founded graph with no non-trivial automorphisms
+	
+	\item Equivalently, $ G $ is a maximal well-founded graph which is extensional
+	
+	\item $ G $ is then an \textit{intended model} of Set Theory
+	
+\end{itemize}
+
+\section{First Order Logic}
+
+\begin{itemize}
+	
+	\item Logical symbols: $ \lnot $, $ \land $, $ \lor $, $ \implies $, $ \iff $, $ \exists $, $ \forall $, $ ( $, $ ) $
+	
+	\item Non-logical symbols: constant symbols ($ a, b, c $), relation symbols ($ P, Q, R $), function symbols ($ f, g, h $)
+	
+	\item Language: $ \Lang = \set{a, b, c, \dots, P, Q, R, \dots, f, g, h, \dots}$
+	
+	\item Individual variables will be denoted $ v_1, v_2, \dots $
+	
+	\item Metavariables / arbitrary variables will be denoted $ x, y, z, \dots $
+	
+	\item The set of terms, $ Term $ is defined recursively:
+	
+	\begin{itemize}
+		
+		\item If $ t $ is a constant symbol or individual variable, $ t $ is a term
+		
+		\item If $ t_1, \dots, t_n $ are terms and $ f $ is a function symbol with arity $ n $, $ f(t_1, \dots, t_n) $ is a term
+		
+		\item Nothing else is a term
+		
+	\end{itemize}
+	
+	\item A string $ \varphi $ is an \textit{atom} if $ \varphi = Rt_1, \dots, t_n $ where $ t_1, \dots, t_n $ are terms and $ R $ is a relation with arity $ n $
+	
+	\item If $ t $ is a term with no variables occurring in it, $ t $ is a \textit{closed term}
+	
+	\item The set of Well Formed Formulae $ WFF $ is defined recursively, with atoms as the base case
+	
+	\begin{itemize}
+		\item If $ \varphi $ consists of a combination of logical operators over well formed formulae, $ \varphi \in WFF $
+	\end{itemize}
+	
+%	\item The set of Well Formed Formulae, $ WFF $ is defined recursively:
+%	
+%	\begin{itemize}
+%		
+%		\item If $ \varphi $ is an atom, $ \varphi \in WFF $
+%		
+%		\item If $ \varphi \in \set{\lnot \psi, \forall x \psi, \exists x \psi} $ where $ \psi \in WFF $ and $ x $ is a variable, $ \varphi \in WFF $
+%		
+%		\item If $ \varphi \in \set{(\psi \land \chi), (\psi \lor \chi), (\psi \implies \chi)} $ where $ \psi, \chi \in WFF $, $ \varphi \in WFF $
+%		
+%		\item Nothing else is in $ WFF $
+%		
+%	\end{itemize}
+
+	\item $ x $ is \textit{free} in $ \varphi \in WFF $ if:
+	
+	\begin{itemize}
+		
+		\item If $ \varphi = R t_1, \dots, t_n $ and $ x = t_i $ for some $ i $
+		
+		\item If $ \varphi $ consists of logical operators over well formed formula, where $ x $ is free in at least one
+		
+		\item If $ \varphi $ is a quantification over a formula where $ x $ is free, and $ x $ is not the bound variable
+		
+	\end{itemize}
+
+%	\item The variable $ x $ `being free' in $ \varphi \in WFF $ is defined recursively:
+%	
+%	\begin{itemize}
+%		
+%		\item If $ \varphi = R t_1, \dots, t_n $ and $ x = t_i $ for some $ i $, then $ x $ is free in $ \varphi $
+%		
+%		\item If $ \varphi \in \set{\forall y \psi, \exists y \psi} $ and $ x $ is free in $ \psi $ and $ x \ne y $, $ x $ is free in $ \varphi $
+%		
+%		\item If $ \varphi \in \set{\lnot \psi, (\psi \land \chi), (\psi \lor \chi), (\psi \implies \chi)} $ and $ x $ is free in $ \psi $ or $ \chi $, then $ x $ is free in $ \varphi $
+%		
+%		\item Otherwise $ x $ is not free in $ \varphi $
+%		
+%	\end{itemize}
+
+	\item If $ \varphi $ has no free variables, $ \varphi $ is a sentence, $ \varphi \in Sent $
+	
+\end{itemize}
+
+\newpage
+
+\section{Model Theory}
+
+\begin{itemize}
+	
+	\item A model $ \Model $ requires:
+	
+	\begin{itemize}
+		
+		\item A language $ \Lang $
+		
+		\item A domain $ M $ of objects
+		
+		\item An interpretation:
+		
+		\begin{itemize}
+			
+			\item Constant symbols $ c $ are interpreted by some object from the domain: $ c^\Model \in M $
+			
+			\item Relation symbols $ R $ (with arity $ n $) are interpreted by a set of tuples of objects within the domain; so $ R^\Model \subseteq \setcomp{\tuple{m_1, \dots, m_n}}{m_1, \dots, m_n \in M} $
+			
+			\item Function symbols $ f $ with arity $ n $ are interpreted by functions taking some $ m_1, \dots, m_n \in M$, and returning some $ m \in M $
+			
+		\end{itemize}
+		
+	\end{itemize}
+
+	\item A model of $ \Lang = \set{a, b, c, \dots, P, Q, R, \dots, f, g, h, \dots} $ would then be:
+	\begin{equation*}
+	\Model = \tuple{M, a^\Model, b^\Model, c^\Model, \dots, P^\Model, Q^\Model, R^\Model, \dots, f^\Model, g^\Model, h^\Model, \dots}
+	\end{equation*}
+	
+	\item If $ t $ is a closed term of $ \Lang $ and $ \Model $ is a model of $ \Lang $, then the \textit{denotation} $ t^\Model $ is:
+	
+	\begin{itemize}
+		\item If $ t $ is a constant symbol $ c $, $ t^\Model = c^\Model $
+		
+		\item If $ t = f(t_1, \dots, t_n) $, $ t^\Model = f^\Model (t_1^\Model, \dots, t_n^\Model) $
+	\end{itemize}
+
+	\item A sentence $ \varphi $ in some language $ \Lang $ may then be \textit{true} in $ \Model $ ($ \Model \models \varphi $)
+	
+	
+	\item $ \varphi $ is \textit{satisfiable} if there exists some model $ \Model $ in the language $ \Lang $ of $ \varphi $ such that $ \Model \models \varphi $
+	
+	\item $ \varphi $ is \textit{valid} ($ \models \varphi$) if for every model $ \Model $ in the language $ \Lang $ of $ \varphi $, $ \Model \models \varphi $
+	
+	\item Given $ \Gamma \subseteq Sent_\Lang $ and $ \varphi \in Sent_\Lang $, we say $ \varphi $ \textit{is a consequence of} $ \Gamma $ ($ \Gamma \models \varphi $) if for every model $ \Model $ of $ \Lang $, if $ \Model \models \gamma $ for all $ \gamma \in \Gamma $, then $ \Model \models \varphi $
+	
+	\item $ \varphi $ is \textit{derivable} from $ \Gamma $ ($ \Gamma \vdash \varphi $) if:
+	
+	\begin{itemize}
+		
+		\item (Ax) $ \varphi $ is an axiom of first order logic
+		
+		\item (Ass) $ \varphi \in \Gamma $
+		
+		\item (MP) $ \Gamma \vdash \psi \implies \varphi $ and $ \Gamma \vdash \psi $
+		
+		\item (UG) If $ \Gamma \vdash \varphi $, then $ \Gamma \vdash \forall y \varphi(y \mapsto x) $ when:
+		
+		\begin{itemize}
+			\item $ x $ is not free in any formula in $ \Gamma $;
+			\item $ y = x $; or
+			\item $ y $ is not free in $ \varphi $
+		\end{itemize}
+		
+	\end{itemize}
+
+	\item A model can describe a structure \textit{externally} (as in the graph model), or \textit{internally} using sentences true in the intended model
+	
+	\item A \textit{theory} $ \Gamma $ is a set of sentences closed under consequence (i.e. $ \Gamma \vdash \varphi \implies \varphi \in \Gamma $)
+	
+	\begin{itemize}
+		
+		\item It is \textit{consistent} if there is no sentence $ \varphi $ such that $ \Gamma \vdash \varphi \land \lnot \varphi $
+		
+		\item It is \textit{complete} if for all $ \varphi $ we have either $ \Gamma \vdash \varphi $ or $ \Gamma \vdash \lnot \varphi $
+		
+		\item It is \textit{categorical} if there is exactly one model $ \Model $ such that $ \Model \models \Gamma $
+		
+	\end{itemize}
+	
+	\item A theory is \textbf{algebraic} if it has multiple intended models, and \textbf{non-algebraic} if it has one unique intended model
+	
+\end{itemize}
+
+\newpage

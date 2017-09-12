@@ -33,8 +33,9 @@
 %% Set Theory Macros
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Notation for a pair
-\newcommand{\pair}[2]{\langle #1, #2 \rangle}
+% Use small arrows for implies / iff
+\renewcommand{\implies}{\rightarrow}
+\renewcommand{\iff}{\leftrightarrow}
 
 % Notation for a set (easier than \lbrace \rbrace :P)
 \newcommand{\set}[1]{\left\lbrace #1 \right\rbrace}
@@ -45,11 +46,24 @@
 % Notation for a set comprehension with two conditions
 \newcommand{\setcompdouble}[3]{\set{#1 \, | \, #2 \, | \, #3}}
 
+% Notation for a tuple
+\newcommand{\tuple}[1]{\left\langle #1 \right\rangle}
+
+% Notation for a pair
+\newcommand{\pair}[2]{\tuple{#1, #2}}
+
 % Powerset
 \newcommand{\powerset}[1]{\mathcal{P}(#1)}
 
 % Ordinals
 \newcommand{\On}{\bm{On}}
+% Language
+\newcommand{\Lang}{\mathcal{L}}
+% Language of Set Theory
+\newcommand{\LangSet}{\Lang_\in}
+
+% Model
+\newcommand{\Model}{\mathcal{M}}
 
 % Function notation for injection / surjection / bijection
 \newcommand{\surject}{\twoheadrightarrow}
@@ -69,5 +83,6 @@
 \cfoot{\thepage}
 
 \begin{document}
-	\include{content}
+	\include{intro_material}
+	\include{set_theory}
 \end{document}
