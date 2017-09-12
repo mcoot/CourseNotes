@@ -32,6 +32,41 @@
 	
 \end{itemize}
 
+\subsection{Separation}
+\begin{equation*}
+\forall x_0 \dots \forall x_n \forall w \exists y \forall z (z \in y \iff z \in w \land \varphi (z, x_0 \dots, x_n))
+\end{equation*}
+
+\begin{itemize}
+	
+	\item Given any set $ w $,  there is a set $ y $ consisting of  exactly the elements $ z $ from $ w $ such that $ \varphi(z) $. The $ \varphi $s are \textit{separated out} from $ w $ to get $ y $
+		
+	\item Why do we need a $ w $? We would like to do na\"ive comprehension: $ \exists y \forall x (x \in y \iff \varphi(x)) $
+	
+	\begin{itemize}
+		
+		\item \textit{(Russell) Any theory including na\"ive comprehension is inconsistent}
+		
+		%	\begin{proof}
+		%		Let $ \varphi(x) = x \notin x $ (i.e. $ \varphi $ says $ x $ is not a member of itself).
+		%		
+		%		Fix $ r $ such that for all $ x $,  $ x \in r \iff x \notin x $. But then $ r \in r \iff r \notin r $ which is a contradiction.
+		%	\end{proof}
+		
+		\item This also means there is no universal set, i.e. a set $ x $ such that $ \forall y (y \in x \iff y = y) $
+		
+		%	\begin{proof}
+		%		Suppose there is such an $ x $. Then by separation we get $ \RussellSet $.
+		%		
+		%		But for all $ w $, $ w \in \RussellSet \iff w \notin w $. Since $ x $ contains all of the sets, $ \RussellSet $ is Russell's set which is a contradiction.
+		%	\end{proof}
+		
+	\end{itemize}
+	
+
+	
+\end{itemize}
+
 \subsection{Pairing}
 \begin{equation*}
 \forall x \forall y \exists z (x \in z \land y \in z)
@@ -66,16 +101,6 @@
 	
 \end{itemize}
 
-\subsection{Separation}
-\begin{equation*}
-\forall x_0 \dots \forall x_n \forall w \exists y \forall z (z \in y \iff z \in w \land \varphi (z, x_0 \dots, x_n))
-\end{equation*}
-
-\begin{itemize}
-	
-	\item 
-	
-\end{itemize}
 
 \subsection{Replacement}
 \begin{equation*}
