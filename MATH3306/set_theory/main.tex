@@ -1,0 +1,73 @@
+\documentclass{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[english]{babel}
+
+% Margins
+\usepackage[margin=1in]{geometry}
+% Spaced paragraphs
+\usepackage[parfill]{parskip}
+% Fancy headers
+\usepackage{fancyhdr}
+% Allow use of titles
+\usepackage{titling}
+
+% Maths stuff
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{turnstile}
+
+% Links
+\usepackage[hidelinks]{hyperref}
+
+% Allow repetition in macros
+\usepackage{multido}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Set Theory Macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Notation for a pair
+\newcommand{\pair}[2]{\langle #1, #2 \rangle}
+
+% Notation for a set (easier than \lbrace \rbrace :P)
+\newcommand{\set}[1]{\left\lbrace #1 \right\rbrace}
+
+% Notation for a set comprehension / set builder notation
+\newcommand{\setcomp}[2]{\set{#1 \, | \, #2}}
+
+% Notation for a set comprehension with two conditions
+\newcommand{\setcompdouble}[3]{\set{#1 \, | \, #2 \, | \, #3}}
+
+% Powerset
+\newcommand{\powerset}[1]{\mathcal{P}(#1)}
+
+% Ordinals
+\newcommand{\On}{\bm{On}}
+
+% Function notation for injection / surjection / bijection
+\newcommand{\surject}{\twoheadrightarrow}
+\newcommand{\inject}{\rightarrowtail}
+\newcommand{\biject}{\mathbin{\rightarrowtail \hspace{-8pt} \twoheadrightarrow}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Titles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{MATH3306 Course Notes -- \url{https://github.com/mcoot/CourseNotes} }
+\author{Joseph Spearritt}
+
+\pagestyle{fancy}
+\lhead{\thetitle}
+\rhead{\theauthor}
+\cfoot{\thepage}
+
+\begin{document}
+	\include{content}
+\end{document}

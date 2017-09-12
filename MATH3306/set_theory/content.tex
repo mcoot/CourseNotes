@@ -1,0 +1,56 @@
+\section{Graph Model of Set Theory}
+
+\begin{itemize}
+	
+	\item Directed graphs: $ G = \pair{V}{A} $
+	
+%	\begin{itemize}
+%		
+%		\item $ V $ is the set of vertices
+%		
+%		\item $ A \subseteq V \times V $ is the set of ordered pairs of vertices representing arrows
+%		
+%	\end{itemize}
+
+	\item A graph is \textbf{well-founded} if it has no looping paths and no infinite descending paths
+	
+	\item A graph is \textbf{extensional} if for any $ v_0, v_1 $ such that $ v_0 $ has the same incoming arrows as $ v_1 $, $ v_0 = v_1 $
+	
+	\item Two graphs are isomorphic if there is a function (\textit{isomorphism}) $ \sigma $ between them such that:
+	
+	\begin{itemize}
+		
+		\item $ \sigma $ is a bijection (surjection + injection)
+		
+		\item $ vA_0 u \leftrightarrow \sigma(v) A_1 \sigma(u) $
+		
+	\end{itemize}
+
+	\item An automorphism is an isomorphism between some graph and itself (the identity is a trivial one)
+	
+	\item $ G $ is a subgraph of $ G' $ if $ V \subseteq V' $ and $ v_0 A v_1 \leftrightarrow v_0 A' v_1 $ for all $ v_0, v_1 \in V $
+	
+	\item $ G $ is \textit{maximal} in some property $ \Phi $ if $ G $ possesses $ \Phi $ and there exists no graph $ G' $ such that:
+	
+	\begin{itemize}
+		
+		\item $ G' $ possesses $ \Phi $; and
+		\item $ G $ is a proper subgraph of $ G' $
+		
+	\end{itemize}
+	
+	\item Let $ G $ be a \textit{maximal} well-founded graph with no non-trivial automorphisms
+	
+	\item Equivalently, $ G $ is a maximal well-founded graph which is extensional
+	
+	\item $ G $ is then an \textit{intended model} of Set Theory
+	
+\end{itemize}
+
+\section{First Order Logic \& Model Theory}
+
+\begin{itemize}
+	
+	\item 
+	
+\end{itemize}
