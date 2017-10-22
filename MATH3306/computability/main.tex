@@ -1,0 +1,149 @@
+\documentclass{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[english]{babel}
+
+% Margins
+\usepackage[margin=1in]{geometry}
+% Spaced paragraphs
+\usepackage[parfill]{parskip}
+% Fancy headers
+\usepackage{fancyhdr}
+% Allow use of titles
+\usepackage{titling}
+
+% Maths stuff
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{turnstile}
+
+% Links
+\usepackage[hidelinks]{hyperref}
+
+% Allow repetition in macros
+\usepackage{multido}
+
+% Set up theorem and definition environments
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Tikz
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage{subcaption}
+\usepackage{tikz}
+\usetikzlibrary{automata}
+\usetikzlibrary{arrows}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{calc}
+
+\tikzset{
+	%	vertex/.style={circle,draw,minimum size=1.5em},
+	%	main node/.style={circle,draw,font=\sffamily\Large\bfseries},
+	%	main node/.style={circle,thick,draw},
+	edge/.style={->,> = latex'}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Set Theory Macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Naturals
+\newcommand{\Nat}{\mathbb{N}}
+% Integers
+\newcommand{\Int}{\mathbb{Z}}
+% Rationals
+\newcommand{\Rationals}{\mathbb{Q}}
+% Reals
+\newcommand{\Reals}{\mathbb{R}}
+
+% Use small arrows for implies / iff
+\renewcommand{\implies}{\rightarrow}
+\renewcommand{\iff}{\leftrightarrow}
+
+% Use bold for vectors
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+% Notation for a set (easier than \lbrace \rbrace :P)
+\newcommand{\set}[1]{\left\lbrace #1 \right\rbrace}
+
+% Notation for a set comprehension / set builder notation
+\newcommand{\setcomp}[2]{\set{#1 \, | \, #2}}
+
+% Notation for a set comprehension with two conditions
+\newcommand{\setcompdouble}[3]{\set{#1 \, | \, #2 \, | \, #3}}
+
+% Notation for a tuple
+\newcommand{\tuple}[1]{\left\langle #1 \right\rangle}
+
+% Notation for a pair
+\newcommand{\pair}[2]{\tuple{#1, #2}}
+
+% Powerset
+\newcommand{\powerset}[1]{\mathcal{P}(#1)}
+
+% Ordinals
+\newcommand{\On}{\bm{On}}
+% Language
+\newcommand{\Lang}{\mathcal{L}}
+% Language of Set Theory
+\newcommand{\LangSet}{\Lang_\in}
+
+% Model
+\newcommand{\Model}{\mathcal{M}}
+
+% Function notation for injection / surjection / bijection
+\newcommand{\surject}{\twoheadrightarrow}
+\newcommand{\inject}{\rightarrowtail}
+\newcommand{\biject}{\mathbin{\rightarrowtail \hspace{-8pt} \twoheadrightarrow}}
+
+% Russell's set
+\newcommand{\RussellSet}{\setcomp{z \in x}{z \notin z}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Computability Theory Macros
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Projection function
+\newcommand{\proj}[2]{\pi_{#1, #2}}
+
+% Proper subtraction / 'monus'
+\providecommand{\monus}{% Don't redefine it if available
+	\mathbin{% We want a binary operation
+		\vphantom{+}% The same height as a plus or minus
+		\text{% Change size in sub/superscripts
+			\mathsurround=0pt % To be on the safe side
+			\ooalign{% Superimpose the two symbols
+				\noalign{\kern-.35ex}% but the dot is raised a bit
+				\hidewidth$\smash{\cdot}$\hidewidth\cr % Dot
+				\noalign{\kern.35ex}% Backup for vertical alignment
+				$-$\cr % Minus
+			}%
+		}%
+	}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Titles
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{MATH3306 Course Notes -- \url{https://github.com/mcoot/CourseNotes} }
+\author{Joseph Spearritt}
+
+\pagestyle{fancy}
+\lhead{\thetitle}
+\rhead{\theauthor}
+\cfoot{\thepage}
+
+\begin{document}
+	\include{c_fsa}
+	\include{c_tm}
+	\include{c_partialrec}
+\end{document}
