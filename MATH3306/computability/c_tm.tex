@@ -1,1 +1,87 @@
 \section{Turing Machines}
+
+\subsection{Definition}
+
+\begin{itemize}
+	
+	\item A Turing machine is a tuple $ T = (Q, F, A, I, \tau, q_0) $
+	
+	\begin{itemize}
+		
+		\item $ Q $ is a finite set of states
+		
+		\item $ F \subseteq Q $ is the set of final states
+		
+		\item $ A $ is a finite set, the tape alphabet, with a distinguished blank symbol $ B \in A $
+		
+		\item $ I $ is a subset of $ A \setminus \set{B} $, the input alphabet
+		
+		\item $ \tau \subseteq Q \times A \times Q \times A \times \set{L, R} $ is the set of transitions
+		
+		\item $ q_0 \in Q $ is the initial state
+				
+	\end{itemize}
+	
+	\item As in an FSA, non-determinism is allowed
+	
+	\item The tape is infinite in both directions, but only ever contains a finite number of non-blank symbols
+	
+	\item A \textit{tape description} for $ T $ is a triple $ (a, \alpha, \beta) $ with $ a \in A $, and $ \alpha: \Nat \to A $ and $ \beta: \Nat \to A $ being functions with $ a(n) = B $ and $ B(n) = B $ for all but finitely many $ n \in \Nat $
+	
+	\begin{itemize}
+		\item So the tape looks like: $ \dots BBB \beta(l) \beta(l - 1) \dots \beta(0) \underline{a} \alpha(0) \alpha(1) \dots \alpha(r) BBB \dots $, with $ l, r \in \Nat $
+	\end{itemize}
+	
+	\item A \textit{configuration} of $ T $ is a tuple $ (q, a, \alpha, \beta) $ where $ q \in Q $ and $ (a, \alpha, \beta) $ is a tape description
+	
+	\item If $ c = (q, a, \alpha, \beta) $ is a configuration, a configuration $ c' $ is obtained (reachable) from $ c $ by a single move if one of the following holds:
+	
+	\begin{itemize}
+		\item $ (q, a, q', a', L) \in \tau $ and $ c' = (q', \beta(0), \alpha', \beta') $ where:
+		$ \alpha'(0) = a', \alpha'(n) = \alpha(n - 1), n > 0 $ and $ \beta'(n) = \beta(n + 1), n \ge 0 $, or
+		
+		\item $ (q, a, q', a', R) \in \tau $ and $ c' = (q', \alpha(0), \alpha', \beta') $ where:
+		$ \alpha'(n) = \alpha(n + 1), n \ge 0 $ and $\beta'(0) = a', \beta'(n) = \beta(n - 1), n > 0 $
+	\end{itemize}
+
+	\item A \textit{computation} of $ T $ is a finite sequence of configurations $ c_1, \dots, c_n = c' $ where $ n \ge 1 $ and $ c_{i+1} $ is obtained from $ c_i $ by a single move, for $ 1 \le i \le n - 1 $
+	
+	\item A configuration is \textit{terminal} if no configuration is reachable from it
+	
+	\item A computation halts if $ c' $ is terminal (i.e. there is no configuration reachable from $ c' $)
+	
+	\item We may write $ c \turingcomputes{T} c' $ if there is a computation starting at $ c $ and ending at $ c' $
+	
+\end{itemize}
+
+\subsection{Turing Machine as Language Recogniser}
+
+\begin{itemize}
+	
+	\item For $ w = a_1 \dots a_n \in A^* $, let $ c_w = (a_0, \underline{a_1} \dots a_n) $ (recall $ \underline{a_1} \dots a_n $ is a tape description $ (a, \alpha, \beta) $)
+	
+	\item If $ w = \varepsilon $, we put $ c_w = (q_0, \underline{B}) $
+	
+	\item The TM $ T $ \textit{accepts} if $ c_w \turingcomputes{T} c' $ for some $ c' = (q, a, \alpha, \beta) $ with $ q \in F $
+	
+	\item The language recognised by $ T $ is $ \Lang(T) = \setcomp{w \in I^*}{w \text{ is accepted by } T } $
+	
+	\item Note that $ \Lang(T) $ is a language over $ I $ rather than over $ A $
+	
+	\item $ T $ is deterministic if for every $ (q, a) \in Q \times A $ there is \textit{at most one} element of $ \tau $ starting with $ (q, a) $
+	
+	\item Then, there is at most one config $ c' $ obtained from $ c $ by a single move; set $ \delta(c) = c' $
+	
+	\item $ \delta: C \to C $ is then a partial function
+	
+\end{itemize}
+
+\clearpage
+
+\subsection{Numerical Turing Machines}
+
+\begin{itemize}
+	
+	\item 
+	
+\end{itemize}
