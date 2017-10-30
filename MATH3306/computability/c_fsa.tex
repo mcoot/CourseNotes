@@ -1,1 +1,245 @@
 \section{Finite State Automata}
+
+\subsection{Alphabets \& Strings}
+
+\begin{itemize}
+	
+	\item Let $ A $ be a set; then $ A^n $ is the set of all finite sequences $ a_1 \dots a_n $ with $ a_i \in A $, $ 1 \le i \le m $
+	
+	\begin{itemize}
+		\item Elements of $ A $ are \textit{letters} or \textit{symbols}
+		
+		\item Elements of $ A^n $ are \textit{words} or \textit{strings} over $ A $ of length $ m $
+	\end{itemize}
+
+	\item $ \varepsilon $ is the special \textit{empty string}, the only string of length $ 0 $
+
+	\item $ A^+ = \bigcup_{m \ge 1} A^m $ -- the set of non-empty strings over $ A $ of any length
+	
+	\item $ A^* = A^+ \cup \varepsilon = \bigcup_{m \ge 0} A^m$ -- the set of (possibly empty) strings over $ A $ of any length
+	
+	\item If $ \alpha = a_1 \dots a_m $, $ \beta = b_1 \dots b_m \in A^* $, then define $ \alpha \beta $ to be $ a_1 \dots a_m b_1 \dots b_m \in A^{m + n} $. This gives binary `product' or \textit{concatenation} on $ A^* $
+	
+	\item For $ \alpha \in A^+ $, define $ \alpha^n, n \in \Nat $ by $ \alpha^0 = \varepsilon $, and $ \alpha^{n+1} = \alpha^n \alpha $
+	
+	\item A \textit{language} with alphabet $ A $ is a subset of $ A^* $
+	
+\end{itemize}
+
+\clearpage
+
+\subsection{Definition of an FSA}
+
+\begin{itemize}
+	
+	\item A Finite State Automaton (FSA) is a tuple $ M = (Q, F, A, \tau, q_0) $
+	
+	\begin{itemize}
+		
+		\item $ Q $ is a finite set of states
+		
+		\item $ F \subseteq Q $ is the set of final states
+		
+		\item $ A $ is the alphabet
+		
+		\item $ \tau \subseteq Q \times A \times Q $ is the set of transitions
+		
+		\item $ q_0 \in Q $ is the initial state
+		
+	\end{itemize}
+
+	\item The transition diagram of an FSA is a directed graph with:
+	
+	\begin{itemize}
+		
+		\item Vertex set $ Q $
+		
+		\item An edge for each transition; $ (q, a, q') \in \tau $ corresponds to an edge from $ q $ to $ q' $ with label $ a $
+		
+		\item Initial state $ q_0 $ labelled with $ - $
+		
+		\item Final states labelled with $ + $
+		
+		\item Example: a \textit{non-deterministic} `haha machine', with $ A = \set{h, a} $
+		
+		\begin{tikzpicture}
+		\node[circle,thick,draw] (q0) at (0, 0) {$ - $};
+		\node[circle,thick,draw] (q1) at (2, 0) {$ \; $};
+		\node[circle,thick,draw] (q2) at (4, 0) {$ + $};
+		
+		\draw[edge] (q0) to[bend left] node[above] {h} (q1);
+		\draw[edge] (q1) to[bend left] node[above] {a} (q2);
+		\draw[edge] (q1) to[bend left] node[below] {a} (q0);
+		\end{tikzpicture}
+		
+	\end{itemize}
+
+	\item A \textit{computation} of $ M $ is a sequence $ q_0, a_1, q_1, a_2, \dots, a_n, q_n $ with $ n \ge 0 $ where $ (q_i, a_{i+1}, q_{i+1}) \in \tau $ for $ 0 \le i \le n - 1 $
+	
+	\begin{itemize}
+		
+		\item The \textit{label} on the computation is $ a_1 \dots a_m $
+		
+		\item The computation is \textit{successful} if $ q_n \in F $
+		
+		\item A string $ a_1 \dots a_n $ is \textit{accepted} by $ M $ if there is a successful computation with label $ a_1 \dots a_n $, and it is \textit{rejected} otherwise
+		
+	\end{itemize}
+
+	\item The language recognised by $ M $ is $ \Lang(M) = \setcomp{w \in A^*}{w \text{ is accepted by } M} $
+	
+	\item There is a one-to-one correspondence between computations of $ M $ and paths in the graph from $ q_0 $	
+	
+	\item Example: $ A = \set{a, b} $ of an FSA accepting only words with an odd number of 'a's
+	
+	\begin{tikzpicture}
+	\node[circle,thick,draw] (q0) at (0, 0) {$ - $};
+	\node[circle,thick,draw] (q1) at (4, 0) {$ + $};
+	
+	\draw[edge] (q0) to[bend left] node[above] {a} (q1);
+	\draw[edge] (q0) to[loop left] node[left] {b} (q0);
+	
+	\draw[edge] (q1) to[bend left] node[above] {a} (q0);
+	\draw[edge] (q1) to[loop right] node[right] {b} (q1);
+	\end{tikzpicture}
+	
+	\item An FSA is deterministic (a DFA) if for all $ q \in Q, a \in A $ there is exactly one $ q' \in Q $ such that $ (q, a, q') \in \tau $
+	
+	\item Example: DFA for the `haha machine'
+	
+	\begin{tikzpicture}
+	\node[circle,thick,draw] (q0) at (0, 0) {$ - $};
+	\node[circle,thick,draw] (q1) at (2, 0) {$ \; $};
+	\node[circle,thick,draw] (q2) at (4, 0) {$ + $};
+	
+	\draw[edge] (q0) to[bend left] node[above] {h} (q1);
+	\draw[edge] (q1) to[bend left] node[above] {a} (q2);
+	\draw[edge] (q2) to[bend left] node[below] {h} (q1);
+	\end{tikzpicture}
+	
+	\item Note this machine lacks a transition for $ a $ when in the initial state -- though technically required for a DFA, it is easily fixed by adding an `error state' to catch what would otherwise be missing transitions
+	
+\end{itemize}
+
+\clearpage
+
+\subsection{Deterministic FSAs}
+
+\begin{itemize}
+	
+	\item For a DFA $ M $, define the transition function $ \delta: Q \times A \to Q $ by $ q' = \delta(a, q) $, where $ q' $ is the unique element such that $ (q, a, q') \in \tau $
+	
+	\item If $ \Lang $ is a language with alphabet $ A $, then the following are equivalent:
+	
+	\begin{enumerate}
+		\item $ \Lang $ is recognised by an FSA
+		
+		\item $ \Lang $ is recognised by a DFA
+	\end{enumerate}
+	
+	\item Given a non-deterministic FSA $ M = (Q, F, A, \tau, q_0) $, an equivalent DFA $ M' = (Q', F', A, \tau', q_0') $ may be generated by the \textit{powerset method}:
+	
+	\begin{itemize}
+		
+		\item $ Q' = \powerset{Q} $ (i.e. the set of all subsets of $ Q $)
+		
+		\item $ F' = \setcomp{X \in Q'}{q \in X \text{ for some } q \in F} $
+		
+		\item For $ X \in Q', a \in A $, define $ \delta(X, a) := \setcomp{q \in Q}{(x, a, q) \in \tau \text{ for some } x \in X} $
+		
+		\item $ \tau' = \setcomp{(X, a, \delta(X, a))}{X \in Q', a \in A} $
+		
+		\item $ q_0' = \set{q_0} $
+		
+	\end{itemize}
+
+	\item Proof: show that $ \Lang(M) = \Lang(M') $
+	
+	\begin{itemize}
+		\item $ \Lang(M) \subseteq Lang(M') $:
+		
+		\begin{itemize}
+			\item Given $ w \in \Lang(M) $, $  q_0 a_1 \dots a_n q_n $ is a successful computation of $ M $
+			
+			\item Then define $ q_i' = \delta(q_{i-1}', a_i) $ for $ 1 \le i \le n $
+			
+			\item $ q_0', a_1, q_1' \dots a_n, q_n' $ will be a successful computation of $ M' $
+			
+			\item Therefore $ w \in \Lang(M') $
+		\end{itemize}
+	
+	\item $ \Lang(M') \subseteq Lang(M) $:
+	
+	\begin{itemize}
+		\item Let $ w = a_1 \dots a_n \in L(M') $, and $  q_0', a_1, q_1' \dots a_n, q_n' $ be a successful computation of $ M $
+		
+		\item Each $ q_i' $ cannot be the empty set
+		
+		\item By definition of $ \tau' $, $ \exists q_1 \in q_1' $ s.t. $ (q_0, a_1, q_1) \in \tau $
+		
+		\item Then we can find $ q_i \in q_i' $ s.t. $ (q_{i-1}, a_i, q_i) \in \tau $ for $ 1 \le i \le n $
+		
+		\item For $ q_n $ we further require $ q_n \in F $
+		
+		\item Therefore, $ q_0, a_1, q_1, a_2, \dots a_n, q_n $ is a successful computation
+		
+		\item Therefore $ w \in \Lang(M) $
+	\end{itemize}
+	
+	\end{itemize}
+	
+\end{itemize}
+
+\clearpage
+
+\subsection{The Pumping Lemma}
+
+\begin{itemize}
+	
+	\item The Pumping Lemma says that for any $ \Lang $ recognised by an FSA $ M $, there is a certain word length beyond which all words can be split into sections as $ xyz$, where $ x y^n z $ is also in the language
+	
+	\item Formally there is an integer $ p > 0 $ s.t. any word $ w \in L $ with $ \abs{w} \ge p $ is of the form $ w = xyz $, where $ \abs{y} > 0 $, $ \abs{xy} \le p $ and $ x y^i z \in \Lang $ for $ i \ge 0 $
+	
+	\item Proof:
+	
+	\begin{itemize}
+		
+		\item Let $ p $ be the number of states in $ M $, and suppose $ w = a_1 \dots a_n \in \Lang $, where $ n \ge p $
+		
+		\item A successful computation $ q_0, a_1, \dots, q_n $ has to pass through a certain state at least twice (by the pigeonhole principle)
+		
+		\item Therefore, $ \exists r < s $ s.t. $ q_r = q_s $; choose minimal such $ s $
+		
+		\item Now put $ x = a_1 \dots a_r $, $ y = a_{r+1} \dots a_s $ (note $ \abs{y} > 0$), and $ z = a_{s+1} \dots a_n $
+		
+		\item By minimality of $ s $, $ q_0, \dots q_{s-1} $ are distinct, and $ \abs{xy} = s \le p $
+		
+		\item Then, note that $ q_r, a_{r+1}, \dots, q_{s} $ is a loop, which may be validly repeated $ i \ge 0 $ times
+		
+		\item Therefore, $ x y^i z \in \Lang $
+		
+	\end{itemize}
+
+	\item Corollary: here exist languages which are not computable by an FSA
+	
+	\item Example: there is no FSA which can recognise $ \Lang = \setcomp{a^n b^n}{n \in \Nat} $
+	
+	\item Proof:
+	
+	\begin{itemize}
+		
+		\item Assume for a contradiction there exists an FSA $ M $ which can recognise $ \Lang $
+		
+		\item Let $ p $ be the number from the pumping lemma, and choose $ n \ge p $ and consider $ w = a^n b^n $
+
+		\item By the pumping lemma, $ \exists x, y, z $ s.t. $ a^n b^n = xyz $, with $ \abs{y} \ge 1 $ and $ \abs{xy} \le p \le n $
+		
+		\item Then $ y $ is written entirely in terms of the letter a, and $ \abs{y} \ge 1 $
+		
+		\item By the pumping lemma, $ x y^i z \in \Lang $ for all $ i $
+		
+		\item So choose $ i = 0 $, then some $ w = a^k b^n \in \Lang $ s.t. $ k < n $, which is a contradiction 
+		
+	\end{itemize}
+	
+\end{itemize}
