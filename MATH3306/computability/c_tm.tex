@@ -78,10 +78,60 @@
 
 \clearpage
 
-\subsection{Numerical Turing Machines}
+\subsection{Numerical Turing Machines: TMs as Function Calculators}
 
 \begin{itemize}
 	
-	\item 
+	\item We want to use TMs to describe a partial function $ f: \Nat^n \to \Nat $
+	
+	\item A \textit{numerical TM} is a deterministic TM $ T = (Q, F, A, I, \tau, q_0) $ with:
+	
+	\begin{itemize}
+		
+		\item $ F = I = \emptyset $
+		
+		\item $ A = \set{0, 1} $, with $ 0 $ as the blank symbol
+		
+	\end{itemize}
+
+	\item In a numerical TM, the final states $ F $ and input alphabets $ I $ are not relevant
+	
+	\item For $ \vec{x} = (x_1, \dots, x_n) \in \Nat^n $, define the tape description $ Tape(\vec{x}) = \underline{0} 1^{x_1} 0 1^{x_2} 0 \dots 0 1^{x_n} $
+	
+	\item Define the partial function $ \varphi_{T, n}: \Nat^n \to \Nat $ as follows:
+	
+	\begin{itemize}
+		
+		\item Let $ \vec{x} \in \Nat^n $ be given
+		
+		\item The initial config of $ T $ is $ (q_0, Tape(\vec{x})) $
+		
+		\item If $ T $ halts with tape $ \underline{0} 1^{y} = Tape(y) $ for some $ y \in \Nat $, then $ \varphi_{T, n}(\vec{x}) = y $
+		
+		\item Otherwise, $ \varphi_{T, n} $ is undefined
+		
+	\end{itemize}
+
+	\item If $ f: \Nat^n \to \Nat = \varphi_{T, n} $ for some numerical TM $ T $, then $ f $ is \textit{TM computable}  
+	
+	\item Note that when considering TMs as language recognisers, halting is regarded as an error -- but for a numerical TM, it is fine \textit{so long as} it ends with a configuration of the form $ (q, \underline{0}1^y) $ with $ y \in \Nat $
+	
+	\item Example: an addition function $ S: \Nat^2 \to \Nat $
+	
+	\begin{tikzpicture}
+	\node[circle,thick,draw] (q0) at (0, 0) {$ - $};
+	\node[circle,thick,draw] (q1) at (2, 0) {$ q_1 $};
+	\node[circle,thick,draw] (q2) at (4, 0) {$ q_2 $};
+	\node[circle,thick,draw] (q3) at (6, 0) {$ q_3 $};
+	
+	\draw[edge] (q0) to node[above] {0/R/0} (q1);
+	\draw[edge] (q1) to node[above] {1/R/0} (q2);
+	\draw[edge] (q2) to node[above] {0/L/1} (q3);
+	
+	\draw[edge] (q2) to[loop above] node[above] {1/R/1} (q2);
+	\draw[edge] (q3) to[loop above] node[above] {1/L/1} (q3);
+	\end{tikzpicture}
+	
+	\item Ultimate theorem: All TM computable functions are partial recursive, and conversely all partial recursive functions are TM computable
 	
 \end{itemize}
