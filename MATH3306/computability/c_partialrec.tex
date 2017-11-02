@@ -1,1 +1,83 @@
 \section{Partial Recursive Functions}
+
+\subsection{Partial Functions, Definition by Composition \& Primitive Recursion}
+
+\begin{itemize}
+	
+	\item Classes of functions:
+	
+	\begin{itemize}
+		
+		\item Let $ P $ be the set of partial functions, $ P = \setcomp{f}{f \text{ is a partial function } \Nat^n \to \Nat \text{ for some } n > 0} $
+		
+		\item Let $ T $ be the set of total functions, $ T = \setcomp{f \in P}{f \text{ is total}} $
+		
+		\item A \textit{class} of functions means a subset of $ P $, and a class of total functions means a subset of $ T $
+		
+		\item Goal: build a class of functions which we might call `computable'
+		
+	\end{itemize}
+	
+	\item Let $ g: \Nat^r \to \Nat, h_1 \dots h_r: \Nat^n \to \Nat $ be partial functions.
+	
+	Then the partial function $ f: \Nat^n \to \Nat $ obtained from $ g, h_1, \dots, h_r $ by composition is defined by:
+	\begin{equation*}
+	f(\vec{x}) = g(h_1(\vec{x}), \dots, h_r(\vec{x}))
+	\end{equation*}
+	\begin{itemize}
+		\item We write $f = g \circ (h_1, \dots, h_r) $
+	\end{itemize}
+	
+	\item Let $ g: \Nat^n \to \Nat, h: \Nat^{n+1} \to \Nat $ be partial functions.
+	
+	Then the partial function $ f: \Nat^{n+1} \to \Nat $ obtained from $ g $ and $ h $ by primitive recursion is defined by:
+	\begin{align*}
+	&f(\vec{x}, 0) = g(\vec{x})\\
+	&f(\vec{x}, y + 1) = h(\vec{x}, y, f(\vec{x}, y))
+	\end{align*}
+	\begin{itemize}
+		\item For a given $ \vec{x} $, $ f(\vec{x}, y) $ is defined for no $ y $, for all $ y $, or for $ 0 \le y \le r $ for some $ r \in \Nat $
+		\item Where the `counter' parameter is placed does not matter - it could equally be at the start
+	\end{itemize}
+	 
+\end{itemize}
+
+\subsection{Partial Recursive Functions}
+
+\begin{itemize}
+	
+	\item We define the \textit{initial functions} to be the following functions:
+	
+	\begin{itemize}
+		
+		\item The zero function $ z: \Nat \to \Nat $, such that $ z(x) = 0 $ for all $ x \in \Nat $
+		
+		\item The successor function $ \sigma: \Nat \to \Nat $, such that $ \sigma(x) = x + 1 $ for all $ x \in \Nat $
+		
+		\item The projection functions $ \pi_{i, n}: \Nat^n \to \Nat $, where for $ n \ge 1 $ and $ 1 \le i \le n $, $ \pi_{i, n}(x_1, \dots, x_n) = x_i $
+		
+	\end{itemize}
+
+	\item A class $ \Class $ of total functions is \textit{primitively recursively closed} if:
+	
+	\begin{itemize}
+		
+		\item $ \Class $ contains all the initial functions
+		
+		\item $ \Class $ is closed under composition
+		
+		\item $ \Class $ is closed under primitive recursion
+		
+	\end{itemize}
+
+	\item The smallest primitively recursively closed class (i.e. the intersection of all prim. rec. closed classes) is called \textit{the class of primitive recursive functions}
+	
+	\item Example: addition function $ S: \Nat^2 \to \Nat $, such that $ S(x, y) = x + y $
+	\begin{align*}
+	S(x, 0) &= g(x), g = \pi_{1, 1}\\
+	S(x, y  + 1) &= S(x, y) + 1\\
+				 &= \sigma(S(x, y))\\
+				 &= h(x, y, S(x, y)), h = \sigma \circ \pi_{3, 3}
+	\end{align*}
+	
+\end{itemize}
