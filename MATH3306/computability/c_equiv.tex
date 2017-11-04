@@ -1,0 +1,81 @@
+\section{Equivalence of Partial Recursive and TM Computable \mbox{Functions}}
+
+A key theorem is that all partial recursive functions are Turing Machine computable, and vice versa.
+
+\subsection{TM Computable Functions Are Partial Recursive}
+
+Recall that a partial function $ f: \Nat^n \to \Nat $ is TM computable if $ f = \varphi_{T, n} $ for some numerical TM $ T $.
+
+Let $ T = (Q, F, A, I, \tau, q_0) $ be a numerical Turing machine (i.e. deterministic, $ F = I = \emptyset $, $ A = \set{0, 1} $).
+
+Recall that $ \varphi_{T, n}(\vec{x}) = \begin{cases}
+y &\text{if the computation starting with } (q_0, \underline{0}1^{x_1} \dots 01^{x_n}) \text{ halts with } (q, \underline{0}1^y)\\
+\textit{undefined} &\text{otherwise}
+\end{cases} $
+
+It is convenient to modify $ T $ slightly. Add two new states $ p $ and $ h $, and the transitions:
+
+\begin{itemize}
+	
+	\item $ (q, a, p, a, L) $ for all $ (q, a) \in Q \times A $ s.t. no element in $ \tau $ starts with $ (q, a) $
+	
+	\item $ (p, a, h, a, R) $ for all $ a \in A $ (i.e. for $ a = 0 $ and $ a = 1 $)
+	
+	\item $ (h, a, p, a, L) $ for all $ a \in A $
+	
+\end{itemize}
+
+Call the new machine $ T' $, so $ Q' = Q \cup \set{p, h} $, with $ C' $ being the set of configurations.
+
+Then $ T' $ is still deterministic, and transitions have the form:
+\begin{equation*}
+(q, a, N(q, a), R(q, a), D(q, a)) \in Q' \times A \times Q' \times A \times \set{L, R}
+\end{equation*}
+where $ N, R, D $ are functions on $ Q' \times A $.
+
+Then, we number the states such that $ Q = \set{0, 1, \dots, r - 1} $, where $ h = 0 $ and $ p = 1 $. We encode $ L = 0 $ and $ R = 1 $.
+
+Now, $ Q' \times A $ is a finite subset of $ \Nat^2 $; put $ N(x, y) = R(x, y) = D(x, y) = 0 $ for $ (x, y) \in \Nat^2 \setminus (Q' \times A) $. Then, $ N, R, D $ are primitive recursive functions $ \Nat^2 \to \Nat $.
+
+Define $ Code: C' \to \Nat $ by $ Code(q, a, \alpha, \beta) = 2^q 3^a 5^{\sigma(\alpha)} 7^{\sigma(\beta)} $, where $ \sigma $ encodes a function in the binary representation of an integer:
+\begin{equation*}
+\sigma(f) = f(0) + 2 \cdot f(1) + 2^2 \cdot f(2) + \dots
+\end{equation*}
+Then $ Code $ is an injective (one-to-one) function.
+
+There is a primitive recursive function $ Next: \Nat \to \Nat $ s.t. $ Next(Code(c)) = Code(\delta(c)) $, for $ c \in C' $ where $ \delta $ is the transition function of $ T' $.
+
+\begin{proof}
+
+Let $ c = (q, a, \alpha, \beta) $; let $ x \in \Nat = Code(c) = 2^q 3^a 5^{\sigma(\alpha)} 7^{\sigma(\beta)} $.
+
+Then, we express $ Next(x) = Code(\delta(c)) $ in terms of $ x $.
+
+First, note that $ q = \log_2 x $ and $ a = \log_3 x $ (here $ \log $ simply retrieves the exponents, it is not the normal logarithm function from calculus/analysis).
+
+That $ Next $ is primitive recursive is then proved in two cases:
+
+\begin{proof}[Proof when $ D(q, a) = 0 $:]
+
+We have that $ \delta(c) = (q', a', \alpha', \beta') $, where $ q' = N(q, a) $ and $ a' = \beta(0) $.
+
+$ Next(x) = Code(\delta(c)) = 2^{N(q, a)} 3^{\beta(0)} 5^{\sigma(\alpha')} 7^{\sigma(\beta')} $
+
+$ N(q, a) = N(\log_2 x, \log_3 x) $; the $ \log $ and $ N $ functions are primitive recursive.
+
+$ \beta(0) = rem(2, log_7 (x)) $ where $ rem $ is the remainder function (which is prim. rec.).
+
+$ \sigma(\alpha') = R(q, a) + 2 \alpha(0) + 2^2 \alpha(1) + \dots = R(\log_2 x, \log_3 x) + 2 \log_5 x$, where $ R $ is prim. rec.
+
+$ \sigma(\beta') = \beta(1) + 2 \beta(2) + 2^2 \beta(3) + \dots = quo(2, \sigma(\beta)) = quo(2, \log_7 x) $, where $ quo $ is the quotient / `integer division' function (which is prim. rec.).
+
+\end{proof}
+
+\begin{proof}[Proof when $ D(q, a) = 1 $:]
+TBA
+\end{proof}
+
+\end{proof}
+
+ 
+

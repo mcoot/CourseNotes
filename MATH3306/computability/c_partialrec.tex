@@ -42,7 +42,7 @@
 	 
 \end{itemize}
 
-\subsection{Partial Recursive Functions}
+\subsection{Primitive Recursive Functions}
 
 \begin{itemize}
 	
@@ -79,5 +79,231 @@
 				 &= \sigma(S(x, y))\\
 				 &= h(x, y, S(x, y)), h = \sigma \circ \pi_{3, 3}
 	\end{align*}
+	
+	\newpage
+	
+	\item Useful tips for showing a function is in a primitively recursively closed class $ \Class $:
+	
+	
+	\begin{itemize}
+		
+		\item Given $ f: \Nat^n \to \Nat $ is in $ \Class $
+		
+		If $ g: \Nat^m \to \Nat $ is defined by $ g(x_1, \dots, x_m) = f(y_1, \dots, y_n) $ where each $ y_i $ is either a constant or $ x_j $ for some $ j $, then $ g \in \Class $ -- lets you manipulate arity
+		
+		\item To show a unary function $ f: \Nat \to \Nat $ is in $ \Class $ by primitive recursion, define $ f': \Nat^2 \to \Nat $ such that $ f'(x, y) = f'(y) $; then, if $ f' $ can be shown to be in $ \Class $, $ f $ will be also
+		
+		\item Let $ a \in \Nat $ and $ h: \Nat \to \Nat $ be in $ \Class $
+		
+		Then, for $ f: \Nat \to \Nat $, if $ f(0) = a $ and $ f(y + 1) = h(f(y)) $, $ f \in \Class $
+		
+	\end{itemize}
+
+	\item A \textit{primitive recursive definition} of $ f: \Nat^n \to \Nat $ is a finite sequence of functions $ f_0, f_1, \dots, f_k = f $, where for each $ i $:
+	
+	\begin{itemize}
+		
+		\item $ f_i $ is initial; or
+		
+		\item $ f_i $ is obtained from composition of some functions $ f_j $, $ j < i $; or
+		
+		\item $ f_i $ is obtained by primitive recursion from two of $ f_j $, $ j < i $
+		
+	\end{itemize}
+
+	\item Example: addition function $ S $ can be defined by $ \pi_{1, 1}, \pi_{3, 3}, \sigma, \sigma \circ \pi_{3, 3} $
+	
+	\item The class $ \Class_1 $ of primitive recursive functions is the same as the class $ \Class_2 $ of functions that have a primitive recursive definition (seems trivial, but isn't!)
+	
+	Prove by showing $ \Class_1 \subseteq \Class_2 $ (i.e. $ \Class_2 $ is prim. rec. closed) and that $ \Class_2 \subseteq \Class_1 $ (i.e. $ \Class_2 $ is contained in any prim. rec. closed class)
+	
+	\item Let $ \Class $ be a prim. rec. closed class, and let $ g: \Nat^{n+1} \to \Nat $ be in $ \Class $; then the functions $ f_1: \Nat^{n+1} \to \Nat $ and $ f_2: \Nat^{n+1} \to \Nat $ defined by:
+	
+	$ f_1(\vec{x}, y) = \sum_{t=0}^{y} g(\vec{x}, t) $
+	
+	$ f_2(\vec{x}, y) = \prod_{t=0}^{y} g(\vec{x}, t) $
+	
+	are also in $ \Class $
+	
+	\item Useful prim. rec. functions:
+	
+	\begin{itemize}
+		\item Proper subtraction $ x \monus y = max\set{x - y, 0} $
+		
+		\item Sign $ sg(x) = \begin{cases}
+		0 \text{ if } x = 0\\
+		1 \text{ if } x \ge 0
+		\end{cases} $
+		
+	\end{itemize}
+	
+\end{itemize}
+
+\newpage
+
+\subsection{Predicates}
+
+\begin{itemize}
+	\item A predicate $ P(x_1, \dots, x_n) $ of $ n $ variables is a statement concerning $ x_i \in \Nat$ which is either true or false
+	
+	\item We can identify $ P $ with the set $ A_P = \setcomp{\vec{x} \in \Nat^n}{P(\vec{x}) \text{ is true}} $
+	
+	\subitem E.g. $ P(x, y) $ means ``$ x $ divides $ y $", so $ A_P = \set{(1, 6), (2, 6), (3, 6), (6, 6), (1, 3) \dots} $
+		
+	\item The \textit{characteristic function} of a set $ \chi_A: \Nat^n \to \set{0, 1} $ of $ A \subseteq \Nat^n $ is defined by:
+	\begin{equation*}
+	\chi_A(\vec{x}) = \begin{cases}
+	1 \text{ if } \vec{x} \in A\\
+	0 \text{ if } \vec{x} \notin A
+	\end{cases}
+	\end{equation*}
+	\item For a predicate $ P $, we define $ \chi_P $ to be $ \chi_{A_P} $
+	
+	\item Let $ \Class $ be a prim. rec. closed class; then a subset $ A \subseteq \Nat^n $ is in $ \Class $ if $ \chi_A \in \Class $
+	
+	\subitem So a predicate $ P $ of $ n $ variables is in $ \Class $ if $ \chi_P \in \Class $
+	
+	\item If $ A, B \subseteq \Nat^n $ are in $ \Class $, then $ A \cup B $, $ A \cap B $ and $ \Nat^n \setminus A $ are in $ C $
+	
+	\subitem So if $ P, Q $ are predicates of $ n $ variables in $ \Class $, $ P \lor Q $, $ P \land Q $ and $ \lnot P $ are in $ \Class $
+	
+	\subitem Proof: $ \chi_{A \cup B}(x) = sg(\chi_A(x) + \chi_B(x)) $, ~~~ $ \chi_{A \cap B} = \chi_A(x) \cdot \chi_B(x) $, ~~~ $ \chi_{\Nat^n \setminus A}(x) = 1 \monus \chi_A(x) $
+	
+	\item The predicates $ x = y $, $ x \ne y $, $ x \le y $, $ x < y $, $ x \ge y $, $ x > y $ are prim. rec.
+	
+	\subitem Proof: Note that $ \chi_{\ne} (x, y) = sg(\abs{1 - 3}) $ and $ \chi_{\ge} (x, y) = sg(x \monus y) $
+	
+	\item Bounded quantifiers:
+	
+	Assume $ P $ is a pred. of $ n + 1 $ variables in $ \Class $; then $ Q, R $ of $ n + 1 $ variables defined below are in $ \Class $:
+	
+	$ Q(x_1, \dots x_n, z) $ is true if and only if $ \exists_{y \le z} (P(x_1, \dots, x_n, y) \text{ is true})$
+	
+	$ R(x_1, \dots x_n, z) $ is true if and only if $ \forall_{y \le z} (P(x_1, \dots, x_n, y) \text{ is true})$
+	
+	\subitem Proof: $ \chi_Q (\vec{x}, z) = sg(\sum_{y=0}^{z} \chi_P(\vec{x}, y)) $, and $ \chi_R (\vec{x}, z) = \prod_{y=0}^{z} \chi_P(\vec{x}, y) $
+	
+\end{itemize}
+
+\subsection{More Primitive Recursive Functions}
+
+\subsubsection{Bounded Minimisation}
+
+Let $ P $ be a pred. of $ n + 1 $ variables. Define $ f: \Nat^{n+1} \to \Nat $ by:
+\begin{equation*}
+f(\vec{x}, z) = \begin{cases}
+\text{the least } y \le z \text{ s.t. } P(\vec{x}, y) \text{ is true}\\
+z + 1 \text{ if no such } y \text{ exists}
+\end{cases}
+\end{equation*}
+Then, $ f(\vec{x}, z) = \mu ~ {y \le z} ~ P(\vec{x}, y) $, called \textit{bounded minimisation}. We have that if $ P \in \Class$ (a prim. rec. closed class), then $ f $ is in $ \Class $.
+
+\begin{proof}
+	
+Define $ g(\vec{x}, t) = \prod_{y=0}^{t} sg(1 \monus \chi_P(\vec{x}, y) \text{ is true})$. Note that $ g(\vec{x}, t) =  \begin{cases}
+0 \text{ if } \exists_{y \le t} P(x, y) \text{ is true}\\
+1 \text{ if } \forall_{y \le t} P(x, y) \text{ is false}
+\end{cases} $
+
+Let $ y \le z $ be the least s.t. $ P(\vec{x}, y) $ is true.
+
+Then the values of $ g $ look like: \begin{tabular}{r | c c c c c c c c}
+	$ t $ & 0 & 1 & $ \dots $ & $ y - 1 $ & $ y $ & $ y + 1 $ & $ \dots $ & $ z $ \\ \hline
+	$ g(\vec{x}, t) $ & 1 & 1 & $ \dots $ & 1 & 0 & 0 & $ \dots $ & 0 
+\end{tabular}
+
+Let $ f(\vec{x}, z) = \sum_{t=0}^{z} g(\vec{x}, t) $, then we will have $ f $ as required for bounded minimsation. If there is no such $ y $, then by the definition of $ g $ we would have $ f(\vec{x}, z) = z + 1 $
+
+\end{proof}
+
+\subsubsection{Definition By Cases}
+
+Let $ f_1, \dots, f_k : \Nat^n \to \Nat $ be in  prim. rec. closed $ \Class $ and let $ P_1, \dots, P_k $ be predicates in $ \Class $ of $ n $ variables. Suppose that for each $ \vec{x} \in \Nat^n $ \textit{exactly} one of $ P_1(\vec{x}), \dots, P_k(\vec{x}) $ is true. Define $ f: \Nat^n \to \Nat $ by:
+\begin{equation*}
+f(\vec{x}) = f_i(\vec{x}) \text{ if } P_i(\vec{x}) \text{ is true}
+\end{equation*}
+Then $ f $ is in $ \Class $.
+
+\begin{proof}
+
+$ f(\vec{x}) = f_1(\vec{x}) \cdot \chi_{P_1}(\vec{x}) + \dots + f_k(\vec{x}) \cdot \chi_{P_k}(\vec{x}) $
+
+\end{proof}
+
+\subsubsection{Iteration}
+
+Let $ X $ be a set, with a partial function $ f: X \to X $. The \textit{iterate} of $ f $ is the partial function $ F: X \times \Nat \to X $ defined by:
+\begin{align*}
+&F(x, 0) = x\\
+&F(x, n + 1) = f(F(x, n))
+\end{align*}
+We have a notion of a function $ f: \Nat^n \to \Nat $ being in a class $ \Class $. This can be extended to functions $ f: \Nat^n \to \Nat^k $ by saying that $ f $ is in $ \Class $ if $ \pi_{i, k} \circ f $ is in $ \Class $ for each $ 1 \le i \le k $.
+
+A class $ \Class $ is closed under iteration if, whenever $ f: \Nat^n \to \Nat^n $ is in $ \Class $, then its iterate $ F: \Nat^{n+1} \to \Nat^n $ is in $ \Class $.
+
+Let $ \Class $ be a prim. rec. closed class. Then if $ f: \Nat^n \to \Nat^n $ is in $ \Class $, its iterate $ F: \Nat^{n+1} \to \Nat^n $ is also in $ \Class $. So any prim. rec. closed class is closed under iteration.
+
+\begin{proof}
+
+This shows only the $ n = 1 $ case.
+
+Define $ f': \Nat^3 \to \Nat $ by $ f'(x, y, z) = f(z) $, which is in $ \Class $.
+
+Then the iterate of $ f $ is defined by:
+
+\begin{align*}
+&F(z, 0) = z\\
+&F(z, y + 1) = f(F(z, y)) = f'(x, y, F(x, y))
+\end{align*}
+
+This is defined by primitive recursion, so $ F $ is in $ \Class $.
+
+\end{proof}
+
+\newpage
+
+\subsection{Recursive and Partial Recursive Functions}
+
+\subsubsection{Minimisation}
+
+Let $ f: \Nat^{n+1} \to \Nat $ be a partial function. The function obtained from $ f $ by \textit{minimisation} is the partial function $ g: \Nat^n \to \Nat $ defined by
+\begin{equation*}
+g(\vec{x}) = \begin{cases}
+r &\text{ if } f(\vec{x}, r) = 0 \text{ and for } s < r, f(\vec{x}, s) \text{ is defined and not 0}\\
+\textit{undefined} &\text{ otherwise}
+\end{cases}
+\end{equation*}
+We write $ g(\vec{x}) = \mu y (f(\vec{x}, y) = 0) $. It is also called the $ \mu $-operator or unbounded search operator. The function $ g $ may be partial, even if $ f $ is total, and vice versa.
+
+Note that it is not \textit{quite} accurate to say $ g(x) = \mu y (f(\vec{x}, y) = 0) $ is the least $ y $ s.t. $ f(x, y) = 0 $; if there is some least $ y $ s.t. $ f(x, y) = 0 $, but $ f(x, s) $ is undefined for some $ s < y $, then $ g(x) $ is undefined.
+
+\subsubsection{The Class of Recursive Functions}
+
+\begin{itemize}
+	
+	\item A total function $ f(\vec{x}, y) $ is \textit{regular} if for any $ \vec{x} \in \Nat^n $, there exists $ y \in \Nat $ such that $ f(\vec{x}, y) = 0 $
+	
+	\item The regular functions are exactly those to which we can apply minimisation and end up with a total function
+	
+	\item The function $ g $ is obtained from $ f $ by \textit{regular minimisation} if $ g(\vec{x}) = \mu y (f(\vec{x}, y) = 0) $ where $ f $ is regular
+	
+	\item The \textit{class of recursive functions} is the smallest class $ \Class $ of total functions which is primitively recursively closed and is closed under regular minimisation
+	
+	\item Note that there are recursive functions which are \textit{not} primitive recursive
+	
+	\item Example: the two-argument Ackermann function defined by:
+	\begin{equation*}
+	A(m, n) = \begin{cases}
+	n + 1 &\text{ if } m = 0\\
+	A(m - 1, 1) &\text{ if } m > 0 \text{ and } n = 0\\
+	A(m - 1, A(m, n - 1)) &\text{ if } m > 0 \text{ and } n > 0
+	\end{cases}
+	\end{equation*}
+	
+	\item The \textit{class of partial recursive functions} is the smallest class of partial functions which contains the initial functions, and is closed under composition, primitive recursion and minimisation
+	
+	\begin{itemize}
+		\item Note that this is \textit{not} a primitively recursively closed class -- that term only applies to a class of total functions
+	\end{itemize}
 	
 \end{itemize}
