@@ -53,29 +53,97 @@ Then, we express $ Next(x) = Code(\delta(c)) $ in terms of $ x $.
 
 First, note that $ q = \log_2 x $ and $ a = \log_3 x $ (here $ \log $ simply retrieves the exponents, it is not the normal logarithm function from calculus/analysis).
 
-That $ Next $ is primitive recursive is then proved in two cases:
+We have that $ N(q, a) = N(\log_2 x, \log_3 x) $; the $ \log $ and $ N $ functions are primitive recursive.
 
-\begin{proof}[Proof when $ D(q, a) = 0 $:]
+There are then two cases, moving left or right:
+
+\newpage
+
+\subsubsection{Move left - $ D(q, a) = 0 $}
 
 We have that $ \delta(c) = (q', a', \alpha', \beta') $, where $ q' = N(q, a) $ and $ a' = \beta(0) $.
 
 $ Next(x) = Code(\delta(c)) = 2^{N(q, a)} 3^{\beta(0)} 5^{\sigma(\alpha')} 7^{\sigma(\beta')} $
 
-$ N(q, a) = N(\log_2 x, \log_3 x) $; the $ \log $ and $ N $ functions are primitive recursive.
-
-$ \beta(0) = rem(2, log_7 (x)) $ where $ rem $ is the remainder function (which is prim. rec.).
+$ \beta(0) = rem(2, \log_7 (x)) $ where $ rem $ is the remainder function (which is prim. rec.).
 
 $ \sigma(\alpha') = R(q, a) + 2 \alpha(0) + 2^2 \alpha(1) + \dots = R(\log_2 x, \log_3 x) + 2 \log_5 x$, where $ R $ is prim. rec.
 
 $ \sigma(\beta') = \beta(1) + 2 \beta(2) + 2^2 \beta(3) + \dots = quo(2, \sigma(\beta)) = quo(2, \log_7 x) $, where $ quo $ is the quotient / `integer division' function (which is prim. rec.).
 
+\subsubsection{Move right - $ D(q, a) = 1 $}
+
+In this case we have that $ \delta(c) = (q', a', \alpha', \beta') $, where $ q' = N(q, a) $ and $ a' = \alpha(0) $.
+
+$ \alpha(0) = rem(2, \log_5 x) $
+
+$ \sigma(\alpha') = quo(2, \log_5 x) $
+
+$ \sigma(\beta') = R(\log_2 x, \log_3 x) + 2 \log_7 x $
+
+\subsubsection{Conclusion}
+
+We can combine both cases using $ E(x) = D(\log_2 x, \log_3 x) $. This gives us the functions:
+
+$ F_1(x) = N(\log_2 x, \log_3 x) $
+
+$ F_2(x) = (1 \monus E(x)) \cdot rem(2, \log_7 x) + E(x) rem(2, \log_5 x) $
+
+$ F_3(x) = (1 \monus E(x)) \cdot (R(\log_2 x \log_3 x) + 2 \log_5 x) + E(x) \cdot quo(2, \log_5 x) $
+
+$ F_4(x) = (1 \monus E(x)) \cdot quo(2, \log_7 x) + E(x) \cdot(R(\log_2 x, \log_3 x) + 2 \log_7 x) $
+
+Clearly each of these is a composition of primitive recursive functions, and so each is primitive recursive.
+
+Then, $ Next(x) = 2^{F_1(x)} 3^{F_2(x)} 5^{F_3(x)} 7^{F_4(x)} $. This is a composition of exponentiation and functions known to be primitive recursive, so $ Next(x) $ is also primitive recursive.
+
 \end{proof}
 
-\begin{proof}[Proof when $ D(q, a) = 1 $:]
-TBA
-\end{proof}
+Recall that if $ f: \Nat \to \Nat $ is primitive recursive, then its iterate $ F: \Nat^2 \to \Nat $ is also prim. rec.
 
-\end{proof}
-
+Let $ \bar{\delta} $ be the iterate of $ \delta $. If $ Comp $ is the iterate of $ Next $, then $ Comp(Code(c), t) = Code(\bar{\delta}(c, t)) $ for any $ c \in C' $ and $ t \in \Nat $.
  
+\begin{proof}
+	Use induction on $ t $.
+	
+	First, $ Comp(Code(c), 0) = Code(c) = Code(\bar{\delta}(c, 0)) $.
+	
+	Now, assume that $ Comp(Code(c), t) = Code(\bar{\delta}(c, t)) $ holds.
+	
+	Then, we have:
+	\begin{align*}
+	Comp(Code(c), t + 1) &= Next(Comp(Code(c), t))\\
+						 &= Next(Code(\bar{\delta}(c, t)))\\
+						 &= Code(\delta(\bar{\delta}(c, t)))\\
+						 &= Code(\bar{\delta}(c, t + 1))
+	\end{align*}
+\end{proof}
 
+\newpage
+
+Define the function $ In_{T, n}: \Nat^n \to C' $, such that $ In_{T, n}(\vec{x}) $ returns the initial configuration of $ T $ when started with the tape described by $ Tape(\vec{x}) $.
+
+\textbf{Main theorem}: the function $ \varphi_{T, n} $ is partial recursive.
+
+\begin{proof}
+	Note $ \varphi_{T, n}(\vec{x}) = \begin{cases}
+	y &\text{ if } \exists t \in \Nat \text{ s.t. } \bar{\delta}(In_{T, n}(\vec{x}), t) = (h, \underline{0} 1^y) \text{ for some } y \in \Nat\\
+	\textit{undefined} &\text{otherwise}
+	\end{cases} $
+	
+	Also note that $ Code(h, \underline{0} 1^y) = 2^0 3^0 5^{1 + 2 + 2^2 + \dots + 2^{y - 1}} 7^0 = 5^{2^y - 1}$.
+	
+	If $ \bar{\delta}(In_{T, n}(\vec{x}), t) = (h, \underline{0} 1^y) $ for some $ t, y \in \Nat $, then we have that:
+	
+	$ Comp(Code(In_{T, n}(\vec{x})), t) = Code(\bar{\delta}(In_{T, n}(\vec{x}), t)) = 5^{2^y - 1} $
+	
+	Define $ \psi: \Nat^{n+1} \to \Nat $ by $ \psi(\vec{x}, t) = Comp(Code(In_{T, n}(\vec{x})), t) $.
+	
+	The composition $ Code(In_{T, n}(\vec{x})) $ is primitive recursive (from assignments), and $ Comp $ is primitive recursive since it is the iterate of the primitive recursive $ Next $.
+	
+	Then, $ \varphi_{T, n}(\vec{x}) = \begin{cases}
+	\log_2 (1 + \log_5(\psi(\vec{x}, t))) &\text{ for any } t \in \Nat \text{ s.t. } \psi(\vec{x}, t) = 5^{2^y - 1} \text{ for some } y\\
+	\textit{undefined} &\text{otherwise}
+	\end{cases} $
+
+\end{proof}
