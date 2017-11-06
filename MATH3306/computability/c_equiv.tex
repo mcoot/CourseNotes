@@ -126,24 +126,110 @@ Define the function $ In_{T, n}: \Nat^n \to C' $, such that $ In_{T, n}(\vec{x})
 \textbf{Main theorem}: the function $ \varphi_{T, n} $ is partial recursive.
 
 \begin{proof}
-	Note $ \varphi_{T, n}(\vec{x}) = \begin{cases}
-	y &\text{ if } \exists t \in \Nat \text{ s.t. } \bar{\delta}(In_{T, n}(\vec{x}), t) = (h, \underline{0} 1^y) \text{ for some } y \in \Nat\\
-	\textit{undefined} &\text{otherwise}
-	\end{cases} $
 	
-	Also note that $ Code(h, \underline{0} 1^y) = 2^0 3^0 5^{1 + 2 + 2^2 + \dots + 2^{y - 1}} 7^0 = 5^{2^y - 1}$.
-	
-	If $ \bar{\delta}(In_{T, n}(\vec{x}), t) = (h, \underline{0} 1^y) $ for some $ t, y \in \Nat $, then we have that:
-	
-	$ Comp(Code(In_{T, n}(\vec{x})), t) = Code(\bar{\delta}(In_{T, n}(\vec{x}), t)) = 5^{2^y - 1} $
-	
-	Define $ \psi: \Nat^{n+1} \to \Nat $ by $ \psi(\vec{x}, t) = Comp(Code(In_{T, n}(\vec{x})), t) $.
-	
-	The composition $ Code(In_{T, n}(\vec{x})) $ is primitive recursive (from assignments), and $ Comp $ is primitive recursive since it is the iterate of the primitive recursive $ Next $.
-	
-	Then, $ \varphi_{T, n}(\vec{x}) = \begin{cases}
-	\log_2 (1 + \log_5(\psi(\vec{x}, t))) &\text{ for any } t \in \Nat \text{ s.t. } \psi(\vec{x}, t) = 5^{2^y - 1} \text{ for some } y\\
-	\textit{undefined} &\text{otherwise}
-	\end{cases} $
+Note $ \varphi_{T, n}(\vec{x}) = \begin{cases}
+y &\text{ if } \exists t \in \Nat \text{ s.t. } \bar{\delta}(In_{T, n}(\vec{x}), t) = (h, \underline{0} 1^y) \text{ for some } y \in \Nat\\
+\textit{undefined} &\text{otherwise}
+\end{cases} $
+
+Also note that $ Code(h, \underline{0} 1^y) = 2^0 3^0 5^{1 + 2 + 2^2 + \dots + 2^{y - 1}} 7^0 = 5^{2^y - 1}$.
+
+If $ \bar{\delta}(In_{T, n}(\vec{x}), t) = (h, \underline{0} 1^y) $ for some $ t, y \in \Nat $, then we have that:
+
+$ Comp(Code(In_{T, n}(\vec{x})), t) = Code(\bar{\delta}(In_{T, n}(\vec{x}), t)) = 5^{2^y - 1} $
+
+Define $ \psi: \Nat^{n+1} \to \Nat $ by $ \psi(\vec{x}, t) = Comp(Code(In_{T, n}(\vec{x})), t) $.
+
+The composition $ Code(In_{T, n}(\vec{x})) $ is primitive recursive (from assignments), and $ Comp $ is primitive recursive since it is the iterate of the primitive recursive $ Next $. Therefore $ \psi $ is primitive recursive. Then:
+\begin{equation*}
+\varphi_{T, n}(\vec{x}) = \begin{cases}
+\log_2 (1 + \log_5(\psi(\vec{x}, t))) &\text{ for any } t \in \Nat \text{ s.t. } \psi(\vec{x}, t) = 5^{2^y - 1} \text{ for some } y\\
+\textit{undefined} &\text{otherwise}
+\end{cases}
+\end{equation*}e $ P $ defined by $ P(\vec{x}, t) \text{ is true } \iff \psi(\vec{x}, t) = S^{s^y - 1} \text{ for some y} $ is primitive recursive.
+The functions functions $ F $ and $ G $ defined as follows are then also primitive recursive:
+\begin{align*}
+&F(\vec{x}, t) = \log_2 (1 + \log_5(\psi(\vec{x}, t)))\\
+&G(\vec{x}, t) = 1 - \chi_{P}(\vec{x}, t)
+\end{align*}
+
+Then we have that:
+\begin{equation*}
+\varphi_{T, n}(\vec{x}) = \begin{cases}
+F(\vec{x}, t) &\text{ for any } t \in \Nat \text{ s.t. } G(\vec{x}, t) = 0\\
+\textit{undefined} &\text{otherwise}
+\end{cases} 
+\end{equation*}
+Or equivalently:
+\begin{equation*}
+\varphi_{T, n}(\vec{x}) = F(\vec{x}, \mu t (G(\vec{x}, t) = 0))
+\end{equation*}
+
+which is a composition of primitive recursive functions and unbounded minimisation. Therefore $ \varphi_{T, n} $ is partial recursive.
+
+\end{proof}
+
+As it turns out, for a partial function $ f: \Nat^n \to \Nat $, the following are equivalent:
+
+\begin{enumerate}
+	\item $ f $ is partial recursive
+	\item $ f $ is abacus computable
+	\item $ f $ is computable by a register program
+	\item $ f $ is Turing Machine computable
+\end{enumerate}
+
+
+
+\subsection{Other Results in Computability Theory}
+
+Another result is that the class of recursive functions is the same as the class of partial recursive functions that are total (not actually a trivial statement!)
+
+\subsubsection{The Halting Problem}
+
+Let $ \TMs $ be the set of numerical Turing machines whose set of states is $ \text{0, 1, \dots, r} $ for some $ r \in \Nat $. Then $ \TMs $ is countable, and as a corollary, there are countably many partial recursive functions.
+
+An \textit{indexing} of a countable set is an infinite sequence $ \psi_0, \psi_1, \dots $ of elements of $ S $ that includes all elements of $ S $ (though there may be repetitions).
+
+Important theorem: Let $ T_0, T_1, \dots $ be any indexing of $ \TMs $. Let $ \psi_m := \varphi_{T_m, 1} $. Then the function $ f: \Nat^2 \to \Nat $ defined by:
+\begin{equation*}
+f(x, y) = \begin{cases}
+1 &\text{if } \psi_x(y) \text{ is defined}\\
+2 &\text{if } \psi_x(y) \text{ is undefined}
+\end{cases}
+\end{equation*}
+is not recursive.
+
+\begin{proof}
+
+Assume that $ f $ is recursive, and let $ g: \Nat \to \Nat $ be defined by $ g(x) = f(x, x) $ for $ x \in \Nat $. Clearly $ g $ is recursive.
+
+Define $ \theta: \Nat \to \Nat $ by:
+\begin{equation*}
+\theta(x) = \begin{cases}
+0 &\text{if } g(x) = 0\\
+\textit{undefined} &\text{if } g(x) = 1
+\end{cases}
+\end{equation*}
+
+Note that $ \theta(x) = \mu y((y  + 1) \cdot g(x) = 0) $, so $ \theta $ is partial recursive.
+
+Now we claim that $ \theta $ \textit{cannot} be partial recursive.
+
+Note that:
+\begin{equation*}
+\theta(x) = \begin{cases}
+0 &\text{if } \psi_x(x) \text{ is undefined}\\
+\textit{undefined} &\text{if } \psi_x(x) \text{ is defined}
+\end{cases}
+\end{equation*}
+
+Since $ \theta $ is partial recursive, $ \theta = \psi_i $ for some $ i \in \Nat $, and so $ \theta(i) = \psi_i(i) $. Then let the predicate $ P(x) $ represent the statement ``$ \theta(x) $ is defined", or equivalently, ``$ \psi_x(x) $ is undefined".
+
+Then consider $ P(i) $, which is:
+\begin{equation*}
+\theta(i) \text{ is defined} \iff \psi_i(i) \text{ is defined} \iff \psi_i(i) \text{ is undefined}
+\end{equation*}
+
+This is a contradiction. Therefore, the initial assumption (that $ f $ is recursive) is false.
 
 \end{proof}
