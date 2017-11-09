@@ -1,1 +1,187 @@
 \section{First Order Logic}
+
+\subsection{First Order Languages: Syntax}
+
+\begin{itemize}
+	
+	\item A \textit{first-order language} (FOL) consists of the following symbols:
+	
+	\begin{itemize}
+		
+		\item \textit{Logical symbols} $ \land, \lor, \lnot, \implies, \iff, =, \forall, \exists $ (common to all FOLs)
+		
+		\item An infinite set of variables, $ x, y, z, \dots $ (also common to all FOLs)
+		
+		\item Punctuation symbols: parentheses $ ( \text{ and } ) $ and the comma `$ , $' (also common to all FOLs)
+		
+		\item A (possibly empty) set of constant symbols (e.g. $ 0, 1 $)
+		
+		\item A (possibly empty) set of function symbols (e.g. $ +, \times, - $)
+		
+		\item A (possibly empty) set of predicate symbols (e.g. $ < $)
+				
+	\end{itemize}
+
+	\item Each function and predicate symbol has an associated arity $ n $
+	
+	\item Only the \textit{non-logical symbols} are specific to the particular language
+	
+	\item A FOL may be specified by giving only the constant, relation and function symbols
+	
+	\begin{itemize}
+		\item E.g. the first-order language of arithmetic $ \Lang_A $ consists of the following:
+		
+		\begin{itemize}
+			\item The constant symbol $ 0 $
+			\item Unary function symbol $ S $ (the successor function)
+			\item Two binary function symbols $ + $ and $ \cdot $
+		\end{itemize}
+	\end{itemize}
+	
+	\item Given an FOL $ \Lang $, an \textit{expression} of $ \Lang $ is a finite sequence of symbols; not all expressions are \textit{formulae}
+	
+	\item A \textit{term} of an FOL is defined inductively:
+	
+	\begin{itemize}
+		
+		\item Every constant symbol in $ \Lang $ is a term
+		
+		\item Every variable symbol in $ \Lang $ is a term
+		
+		\item If $ t_1, \dots, t_n $ are terms and $ f $ is an $ n $-ary function symbol in $ \Lang $, then $ f(t_1, \dots t_n) $ is a term in $ \Lang $
+		
+	\end{itemize}
+
+	\item An \textit{atomic formula} of an FOL is defined as follows:
+	
+	\begin{itemize}
+		\item If $ t_1 $ and $ t_2 $ are terms, then $ t_1 = t_2 $ is an atomic formula
+		
+		\item If $ F $ is an $ n $-ary predicate and $ t_1, \dots, t_n $ are terms, then $ F(t_1, \dots, t_n) $ is an atomic formula
+	\end{itemize}
+
+	\item A \textit{formula} of an FOL is defined inductively:
+	
+	\begin{itemize}
+		
+		\item An atomic formula is a formula
+		
+		\item If $ \phi $ and $ \psi $ are both formulae, then so are $ \lnot \phi $, $ \phi \land \psi $, $ \phi \lor \psi $, $ \phi \implies \psi $, and $ \phi \iff \psi $
+		
+		\item If $ \phi $ is a formula and $ x $ is a variable symbol, then $ \exists x \phi $ and $ \forall x \phi $ are formulae
+		
+		\item Parentheses should be used as necessary to ensure there is exactly one way of reading a formula
+		
+	\end{itemize}
+
+	\item A variable is \textit{bound} by a quantifier $ \forall x $ or $ \exists x $ in a formula $ \phi $ if:
+	
+	\begin{itemize}
+		\item $ x $ is in the scope of the quantifier; and
+		
+		\item the scope of the quantifier contains no other quantifiers over $ x $ with $ x $ in their scope
+	\end{itemize}
+
+	\item Any variable which is not bound in a formula $ \phi $ is \textit{free} in $ \phi $
+	
+	\item A \textit{sentence} of an FOL is a formula with no free variables
+	
+	\item Importantly, an FOL gives no \textit{meaning} to formulae -- they are not `true' or `false'
+		
+\end{itemize}
+
+\subsection{Models: Semantics}
+
+\begin{itemize}
+	
+	\item For an FOL $ \Lang $, an \textit{$ \Lang $-structure} or \textit{model} $ \Model $ consists of the following:
+	
+	\begin{itemize}
+		\item A domain or universe: a non-empty set $ \abs{\Model} $
+		
+		\item Interpretation for constant symbols: for each constant symbol $ c $ of $ \Lang $, an element $ c^\Model \in \abs{\Model} $
+		
+		\item Interpretation for predicate symbols: for each $ n $-ary predicate symbol $ R $ of $ \Lang $, an $ n $-ary predicate $ R^\Model \subseteq \abs{\Model}^n $
+		
+		\item Interpretation for function symbols: for each $ n $-ary function symbol $ f $ of $ \Lang $, an $ n $-ary function $ f^\Model: \abs{\Model}^n \to \abs{\Model} $
+	\end{itemize}
+
+	\item A sentence of $ \Lang $ acquires \textit{meaning} when an $ \Lang $-structure $ \Model $ is given and the sentence is interpreted within $ \Model $
+	
+	\item We can determine the truth value of a formula $ \phi $ (possibly with free variables) in $ \Lang $-structure $ \Model $ if a \textit{variable assignment} $ \alpha: \text{ set of variable symbols} \to \abs{\Model} $ is given
+	
+	\item For given $ \alpha $, replace all free variables $ x_i $ in $ \phi $ by $ \alpha(x_i) $, so $ \phi $ becomes a statement in $ \Model $ which must either be true or false
+	
+	\item We say a formula $ \phi $ is \textit{true in $ \Model $} if $ \phi $ is true for \textbf{any} variable assignment $ \alpha $
+	
+	\item For a sentence $ \phi $ in $ \Lang $, its truth values does not depend on variable assignment (since there is no free variable). Thus $ \phi $ must be either true or false in $ \Model $, independent of variable assignment
+	
+\end{itemize}
+
+\newpage
+
+\subsection{Axiomatic Systems \& Proof}
+
+\begin{itemize}
+	
+	\item A formal axiomatic system comprises:
+	
+	\begin{itemize}
+		
+		\item A first-order language
+		
+		\item Syntactic rules for constructing formulae from the symbols
+		
+		\item A collection of axioms
+		
+		\item Rules of inference
+		
+	\end{itemize}
+
+	\item From the axioms we obtain other formulae using the rules of inference, called \textit{theorems}
+	
+	\item A \textit{proof} of a theorem is the process of applying the rules
+	
+	\item A set of \textit{Logical axioms} are common to first-order axiomatic systems
+	
+	\item We may also state theory-specific \textit{non-logical axioms}
+	
+	\item Two logical inference rules are also provided:
+	
+	\begin{itemize}
+		\item Modus ponens: $ \prftree[r]{}{\phi \implies \psi, \phi}{\psi} $
+		
+		\item Generalisation: $ \prftree[r]{}{\phi}{\forall x \phi} $
+	\end{itemize}
+	
+	\item Given $ T $, a `theory' or (possibly empty) set of non-logical axioms in $ \Lang $, a formula $ \psi $ is \textit{provable} in $ T $, denoted $ T \vdash \psi $ if there is a finite sequence $ \phi_1, \dots, \phi_n $ of formulae such that $ \phi_n $ is equal to $ \psi $ and for all $ i $ with $ 1 \le i \le n $ we have:
+	
+	\begin{itemize}
+		
+		\item $ \phi_i $ is a logical axiom; or
+		
+		\item $ \phi_i \in T $; or
+		
+		\item There are $ j, k < i $ such that $ \phi_j $ is equal to the formula $ \phi_k \implies \phi_i $; or
+		
+		\item There is a $ j < i $ such that $ \phi_i $ is equal to the formula $ \forall x \phi_j $
+		
+	\end{itemize}
+
+	\item If a formula $ \psi $ is not provable in $ T $, then we write $ T \nvdash \psi $
+	
+	\item A formula $ \phi $ is a \textit{tautology} if $ \vdash \phi $ (i.e. it may be proved with no theory-specific axioms)
+	
+	\item We say two formulae $ \phi $ and $ \psi $ are \textit{equivalent}, denoted $ \phi \equiv \psi $ if $ \vdash \phi \iff \psi $; that is, if $ \phi \iff \psi $ is a tautology
+	
+	\item We say a theory $ T $ is \textit{consistent} if there is no formula $ \phi $ in $ \Lang $ such that $ T \vdash (\phi \land \lnot \phi) $
+	
+	\begin{itemize}
+		\item If $ T $ is inconsistent, then for all formulae $ \psi $ in $ \Lang $ we have $ T \vdash \psi $
+		
+		\subitem \textit{``From contradiction, everything follows"}
+	\end{itemize}
+
+	\item We say a theory $ T $ is \textit{complete} if for all formulae $ \phi $ in $ \Lang $, $ T \vdash \phi $ or $ T \vdash \lnot \phi $	
+	
+\end{itemize}
