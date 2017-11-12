@@ -28,7 +28,7 @@
 		\item We write $f = g \circ (h_1, \dots, h_r) $
 	\end{itemize}
 	
-	\item Let $ g: \Nat^n \to \Nat, h: \Nat^{n+1} \to \Nat $ be partial functions.
+	\item Let $ g: \Nat^n \to \Nat, h: \Nat^{n+2} \to \Nat $ be partial functions.
 	
 	Then the partial function $ f: \Nat^{n+1} \to \Nat $ obtained from $ g $ and $ h $ by primitive recursion is defined by:
 	\begin{align*}
@@ -91,7 +91,7 @@
 		
 		If $ g: \Nat^m \to \Nat $ is defined by $ g(x_1, \dots, x_m) = f(y_1, \dots, y_n) $ where each $ y_i $ is either a constant or $ x_j $ for some $ j $, then $ g \in \Class $ -- lets you manipulate arity
 		
-		\item To show a unary function $ f: \Nat \to \Nat $ is in $ \Class $ by primitive recursion, define $ f': \Nat^2 \to \Nat $ such that $ f'(x, y) = f'(y) $; then, if $ f' $ can be shown to be in $ \Class $, $ f $ will be also
+		\item To show a unary function $ f: \Nat \to \Nat $ is in $ \Class $ by primitive recursion, define $ f': \Nat^2 \to \Nat $ such that $ f'(x, y) = f(y) $; then, if $ f' $ can be shown to be in $ \Class $, $ f $ will be also
 		
 		\item Let $ a \in \Nat $ and $ h: \Nat \to \Nat $ be in $ \Class $
 		
@@ -212,7 +212,7 @@ Then the values of $ g $ look like: \begin{tabular}{r | c c c c c c c c}
 	$ g(\vec{x}, t) $ & 1 & 1 & $ \dots $ & 1 & 0 & 0 & $ \dots $ & 0 
 \end{tabular}
 
-Let $ f(\vec{x}, z) = \sum_{t=0}^{z} g(\vec{x}, t) $, then we will have $ f $ as required for bounded minimsation. If there is no such $ y $, then by the definition of $ g $ we would have $ f(\vec{x}, z) = z + 1 $
+Let $ f(\vec{x}, z) = \sum_{t=0}^{z} g(\vec{x}, t) $, then we will have $ f $ as required for bounded minimisation. If there is no such $ y $, then by the definition of $ g $ we would have $ f(\vec{x}, z) = z + 1 $
 
 \end{proof}
 
