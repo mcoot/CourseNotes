@@ -93,9 +93,9 @@
 		
 		\item To show a unary function $ f: \Nat \to \Nat $ is in $ \Class $ by primitive recursion, define $ f': \Nat^2 \to \Nat $ such that $ f'(x, y) = f(y) $; then, if $ f' $ can be shown to be in $ \Class $, $ f $ will be also
 		
-		\item Let $ a \in \Nat $ and $ h: \Nat \to \Nat $ be in $ \Class $
+		\item Let $ a \in \Nat $ and $ h: \Nat^2 \to \Nat $ be in $ \Class $
 		
-		Then, for $ f: \Nat \to \Nat $, if $ f(0) = a $ and $ f(y + 1) = h(f(y)) $, $ f \in \Class $
+		Then, for $ f: \Nat \to \Nat $, if $ f(0) = a $ and $ f(y + 1) = h(y, f(y)) $, $ f \in \Class $
 		
 	\end{itemize}
 
